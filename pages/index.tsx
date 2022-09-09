@@ -1,9 +1,10 @@
 import React from 'react'
+import Header from '../components/Header'
 
 function Home() {
   return (
     <div>
-        <h1 className="text-red-400">Hello World this is me testing tailwind css</h1>
+        <Header/>
     </div>
   )
 }
