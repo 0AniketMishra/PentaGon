@@ -29,7 +29,7 @@ function Header() {
                         <div className='flex  space-x-2 bg-gray-100 p-2 rounded-full px-2 h-10  justify-center '>
 
                             <MagnifyingGlassIcon className="h-6 w-6 text-gray-500" />
-                            <input type="text" placeholder='Search-PenaGram' className='bg-transparent lg:w-80 outline-none  ' />
+                            <input type="text" placeholder='Search-PenaGon' className='bg-transparent lg:w-80 outline-none  ' />
                         </div>
                     </div>
                 </div>
