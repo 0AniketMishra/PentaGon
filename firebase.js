@@ -9,12 +9,13 @@ import { GoogleAuthProvider } from "firebase/auth";
 
 
 const firebaseConfig = {
-    apiKey: "AIzaSyC5nAu2KxeQrgRtzyv_sRKztIsmxf-yB7s",
-    authDomain: "twitter-ea342.firebaseapp.com",
-    projectId: "twitter-ea342",
-    storageBucket: "twitter-ea342.appspot.com",
-    messagingSenderId: "757557540101",
-    appId: "1:757557540101:web:f56bcc81493894979eb36c"
+    apiKey: "AIzaSyDHPMbzUEnmBauY5_jUzMc3Ev06A2Djwrs",
+    authDomain: "pentagon-89b4a.firebaseapp.com",
+    projectId: "pentagon-89b4a",
+    storageBucket: "pentagon-89b4a.appspot.com",
+    messagingSenderId: "570154408830",
+    appId: "1:570154408830:web:6dce003a2c36bd6d94b12f",
+    measurementId: "G-L0NDCYS9WM"
 };
 
 const app = !firebase.apps.length ? firebase.initializeApp(firebaseConfig) :  firebase.app()

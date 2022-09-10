@@ -10,17 +10,20 @@ import {
     UserGroupIcon,
 
 } from '@heroicons/react/24/outline'
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '../firebase';
 
 
 function Header() {
+    const [user] = useAuthState(auth);
     return (
         <div className=" sticky top-0 bg-white">
             <div className="flex justify-between max-w-6xl  mx-5 lg:mx-auto ">
                 <div className='relative h-12 w-24 cursor-pointer'>
                     <div className="flex items-center ">
 
-                        <img src="https://th.bing.com/th/id/R.f61fd1b69a2437dc3dbaa340a235b3a7?rik=6GLgIB4iyAzAAw&riu=http%3a%2f%2fgetdrawings.com%2fvectors%2fwhite-instagram-logo-vector-12.png&ehk=NFrQK5IpTkyur%2bD%2bAXWCx93TmTYgJ35NWG2ecXtu8as%3d&risl=&pid=ImgRaw&r=0" alt="" className="w-10 mt-1 mt-2" />
-                        <h1 className="text-xl text-center font-bold ml-2 hidden lg:inline-grid ">PentaGon</h1>
+                        <img src={user.photoURL} alt="" className="w-10  mt-2 rounded-full " />
+                        <h1 className="text-xs text-center font-bold ml-2 hidden lg:inline-grid  ">{user.displayName}</h1>
                     </div>
                 </div>
 
@@ -29,7 +32,7 @@ function Header() {
                         <div className='flex  space-x-2 bg-gray-100 p-2 rounded-full px-2  justify-center '>
 
                             <MagnifyingGlassIcon className="h-6 w-6 text-gray-500" />
-                            <input type="text" placeholder='Search-PenaGon' className='bg-transparent lg:w-80  w-46 outline-none  ' />
+                            <input type="text" placeholder='Search-PenaGon' className='bg-transparent lg:w-80  w-42 outline-none  ' />
                         </div>
                     </div>
                 </div>
