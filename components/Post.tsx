@@ -3,8 +3,17 @@ import { ArrowsRightLeftIcon, ChatBubbleOvalLeftEllipsisIcon, EllipsisHorizontal
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline'
 import { LikeButton } from '@lyket/react'
 
-function Post() {
-  let username = "Shreya Mishra"
+function Post(
+  {
+    id, 
+    username, 
+    userImg, 
+    img, 
+    posttext,
+  }
+
+) {
+  
   return (
     <div className="ml-4 mr-4  p-2 rounded-lg items-center border border-gray-200 lg:w-[85%]">
 
@@ -12,11 +21,11 @@ function Post() {
         <div className="flex  items-center ">
 
           <div>
-            <img src="https://lh3.googleusercontent.com/a-/AFdZucqIzaspPhKsj-lKIF-KPwINypZ9ESrPY6_Kpo1JiA=s96-c" alt="" className="w-12 h-12 rounded-full p-1 border mb-2" />
+            <img src={userImg} alt="" className="w-12 h-12 rounded-full p-1 border mb-2" />
           </div>
             <div className=" items-center">
            <div className="flex items-center">
-              <h1 className="font-bold ml-2 hover:border-b cursor-pointer ">Shreya Mishra</h1>
+              <h1 className="font-bold ml-2 hover:border-b cursor-pointer ">{username}</h1>
               <img src="https://th.bing.com/th/id/R.9c88df48e24182943ba4945b92aa3704?rik=ng8QDZfIeaOAvg&riu=http%3a%2f%2fclipart-library.com%2fimages%2fgTeEegLRc.png&ehk=rFKFF6hVaGBnpA8yieOD6YZvrGTf6%2fiafNKrPlbD7a8%3d&risl=&pid=ImgRaw&r=0" className='w-4 ml-1 h-4' alt="" />
               
            </div>
@@ -41,10 +50,10 @@ function Post() {
 
       
       <div className="ml-4  mt-2 md:mr-4 ">
-        <h1 className="lg:w-[90%] mb-4">Hello Everybody! I like to introduce all of you to my new creataion its called the pentagon its a social media application which would allow everybody amoong overselves to connect</h1>
+        <h1 className="lg:w-[90%] mb-4">{posttext}</h1>
        <div className="flex items-center overflow-x-scroll space-x-4 p-2 " >
-          <img src="https://d1lss44hh2trtw.cloudfront.net/assets/article/2019/05/13/discord-has-amassed-over-250-million-users-in-four-years_feature.jpg" alt="" className='w-96 rounded-lg ' />
-          <img src="https://th.bing.com/th/id/R.780bc5643ae468d8689ad0ee79c6058d?rik=oDZqR7uu8LIOSw&riu=http%3a%2f%2fppcorn.com%2fus%2fwp-content%2fuploads%2fsites%2f14%2f2016%2f02%2fWhatsApp-ppcorn.jpg&ehk=ZvZvP3tojOcmtZPSdPhOqaU7CiCkKkYCXf0MzYXZ%2bMo%3d&risl=&pid=ImgRaw&r=0" alt="" className='w-96 rounded-lg ' />
+        
+          <img src={img} alt="" className='w-96 rounded-lg ' />
        </div>
       </div>
       
@@ -71,7 +80,7 @@ function Post() {
 
 
 <div>
-  <form action="" className="flex items-center p-4 mt-4 border-t">
+  <form action="" className="flex items-center p-4 mt-4  mb-4border-t">
   <FaceSmileIcon className='h-7'/>
   <input type="text"
    placeholder='Add a comment...'

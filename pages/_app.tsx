@@ -6,6 +6,7 @@ import firebase from '@firebase/app-compat';
 import "firebase/compat/firestore";
 import { useEffect } from 'react';
 import Login from './login';
+import {RecoilRoot} from "recoil"
 
 
 function MyApp({ Component, pageProps}: any) {
@@ -27,7 +28,11 @@ function MyApp({ Component, pageProps}: any) {
     
   
   if(!user) return <Login/>
-  return <Component {...pageProps}/>
+  return (
+    <RecoilRoot>
+    <Component {...pageProps}/>
+    </RecoilRoot>
+  
+)
 }
-
 export default MyApp
