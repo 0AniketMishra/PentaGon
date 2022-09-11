@@ -7,6 +7,7 @@ import firebase from 'firebase/compat';
 
 function Posts() {
   const [posts , setPosts] = useState([]);
+  
 
   useEffect(
     () => 
@@ -17,6 +18,10 @@ function Posts() {
     ),
     [db]
   );
+
+  const sendComment = async (e) => {
+    e.preventDefault()
+  }
 
   console.log(posts)
 
@@ -35,6 +40,7 @@ function Posts() {
         userImg={post.data().profileImg}
         img={post.data().image}
         posttext={post.data().posttext}
+        timestamp={post.data().timestamp}
         />
       ))}
     </div>
