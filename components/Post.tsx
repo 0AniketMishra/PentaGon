@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { ArrowsRightLeftIcon, ChatBubbleOvalLeftEllipsisIcon, EllipsisHorizontalIcon, FaceSmileIcon, HeartIcon, ShareIcon } from '@heroicons/react/24/outline'
-import { EllipsisVerticalIcon } from '@heroicons/react/24/outline'
-import { onSnapshot, collection, addDoc, query, orderBy } from '@firebase/firestore'
+import {
+
+} from '@heroicons/react/24/solid'
+import { onSnapshot, collection, addDoc,doc, deleteDoc, setDoc, query, orderBy } from '@firebase/firestore'
 import { db } from '../firebase';
 import firebase  from '@firebase/app-compat';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../firebase';
-import { snapshot_UNSTABLE } from 'recoil';
 import Moment from 'react-moment';
-
 function Post(
   {
     id, 
@@ -23,11 +23,34 @@ function Post(
   const [user] = useAuthState(auth);
   const [comments, setComments] = useState([])
   const [comment , setComment] = useState("");
+  const [likes, setLikes] = useState([])
+  const [hasLiked, setHasLiked] = useState(false)
+
+  useEffect(() => onSnapshot(collection(db, 'posts', id, 'likes'), (snapshot) => 
+  setLikes(snapshot.docs)),[db, id]
+  )
 
 
-  useEffect(() => onSnapshot(query(collection(db, 'posts' , id , "comments"), orderBy('timestamp', 'desc')) , snapshot  => setComments(snapshot.docs)), [db])
+useEffect(() => {
+  setHasLiked(likes.findIndex(like => like.id === user.uid) !== -1)
+}, [likes])
+
+
+  const likePost = async () => {
+    if(hasLiked) {
+       await deleteDoc(doc(db, 'posts', id, 'likes', user.uid));
+    } else {
+      await setDoc(doc(db, 'posts', id, 'likes', user.uid), {
+        username: user.displayName,
+      });
+    }
+};
+
+
+  useEffect(() => onSnapshot(query(collection(db, 'posts' , id , "comments"), orderBy('timestamp', 'desc')) , snapshot  => setComments(snapshot.docs)), [db, id])
   const sendComment = async (e) => {
     e.preventDefault();
+
 
     const commenttoSend = comment; 
     setComment('')
@@ -63,6 +86,9 @@ function Post(
               <div className="ml-2 flex">
                 <h1 className="text-xs font-bold">@{username.replace(/\s+/g, '').toLowerCase()}</h1>
                 <h1 className="text-xs ml-2">  <Moment fromNow>{timestamp.toDate()}</Moment></h1>
+                {/* <h1 className="text-xs ml-2"><TimeAgo className='text-xs ml-2'date={timestamp}/></h1> */}
+
+                
 
               </div>
             </div>
@@ -82,7 +108,7 @@ function Post(
 
         <div className="ml-4  mt-2 md:mr-4 ">
           <h1 className="lg:w-[90%] mb-4">{posttext}</h1>
-          <div className="flex items-center overflow-x-scroll space-x-4 p-2 " >
+          <div className="flex items-center space-x-4 p-2 " >
 
             <img src={img} alt="" className='w-96 rounded-lg ' />
           </div>
@@ -90,9 +116,21 @@ function Post(
 
         <div >
           <div className=" mt-4 p-1 flex space-x-8 ml-6  justify-between  mr-4 ">
-            <div className="flex items-center hover:text-red-500  hover:scale-125   transition-all duration-150 ease-out">
-              <HeartIcon className='h-6 ' />
-              <h1 className='ml-2'>311K</h1>
+            <div  className=" items-center hover:text-red-500  cursor-pointer hover:scale-125   transition-all duration-150 ease-out">
+              {hasLiked ? (
+                <div className='flex' onClick={likePost}>
+                  <HeartIcon fill='red' className='h-6 text-red-500 ' />
+                  <h1 className='ml-2'>{likes.length}</h1>
+               </div>
+              ): (
+                <div>
+                    <div className='flex' onClick={likePost}>
+                      <HeartIcon  className='h-6 ' />
+                      <h1 className='ml-2'>{likes.length}</h1>
+                    </div>
+                </div>
+              )}
+             
             </div>
 
             <div className="flex items-center hover:text-blue-500  hover:scale-125   transition-all duration-150 ease-out">
@@ -128,14 +166,14 @@ function Post(
                 {comments.map(comment => (
                   <div key={comment.id} className=" space-x-2 mb-3 " >
                     <div className="flex items-center ">
-                      <img src={comment.data().userImage} alt="" className='h-8 rounded-full' />
+                      <img src={comment.data().userImage} alt="" className='h-7 border  rounded-full' />
                       <span className="font-bold text-sm ml-2">{comment.data().username + " : "}</span>
-                      {/* <h1 className="flex-1"></h1> */}
-                      <Moment className="text-xs ml-2" fromNow>{comment.data().timestamp?.toDate()}</Moment>
+                      <h1 className="flex-1"></h1>
+                    <Moment className="text-xs ml-2" fromNow>{comment.data().timestamp?.toDate()}</Moment>
                     </div>
                 
                     
-                      <p className="">{comment.data().comment}</p>
+                      <p className="mt-2 spacex-2">{comment.data().comment}</p>
                      
                     
                     </div>
