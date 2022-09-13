@@ -9,6 +9,11 @@ import firebase  from '@firebase/app-compat';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../firebase';
 import Moment from 'react-moment';
+import { Fragment } from 'react'
+import { Menu, Transition } from '@headlessui/react'
+import { ChevronDownIcon } from '@heroicons/react/20/solid'
+import Posts from './Posts';
+
 function Post(
   {
     id, 
@@ -26,14 +31,19 @@ function Post(
   const [likes, setLikes] = useState([])
   const [hasLiked, setHasLiked] = useState(false)
 
+
   useEffect(() => onSnapshot(collection(db, 'posts', id, 'likes'), (snapshot) => 
   setLikes(snapshot.docs)),[db, id]
   )
+  
 
 
 useEffect(() => {
   setHasLiked(likes.findIndex(like => like.id === user.uid) !== -1)
 }, [likes])
+  
+
+
 
 
   const likePost = async () => {
@@ -47,6 +57,10 @@ useEffect(() => {
 };
 
 
+const deletePost = async (e) => {
+  e.preventDefault();
+  
+}
   useEffect(() => onSnapshot(query(collection(db, 'posts' , id , "comments"), orderBy('timestamp', 'desc')) , snapshot  => setComments(snapshot.docs)), [db, id])
   const sendComment = async (e) => {
     e.preventDefault();
@@ -66,7 +80,9 @@ useEffect(() => {
     })
 
   }
-  
+  function classNames(...classes) {
+    return classes.filter(Boolean).join(' ')
+  }
   return (
   <div>
       <div className="ml-4 mr-4 mt-8 p-2 rounded-lg items-center border border-gray-200 lg:w-[85%]">
@@ -85,7 +101,7 @@ useEffect(() => {
               </div>
               <div className="ml-2 flex">
                 <h1 className="text-xs font-bold">@{username.replace(/\s+/g, '').toLowerCase()}</h1>
-                <h1 className="text-xs ml-2">  <Moment fromNow>{timestamp.toDate()}</Moment></h1>
+                <h1 className="text-xs ml-2">  <Moment fromNow>{timestamp?.toDate()}</Moment></h1>
                 {/* <h1 className="text-xs ml-2"><TimeAgo className='text-xs ml-2'date={timestamp}/></h1> */}
 
                 
@@ -101,8 +117,85 @@ useEffect(() => {
           </div>
 
           <h1 className="flex-1"></h1>
-          <EllipsisHorizontalIcon className="h-6  mr-2 hover:scale-125   transition-all duration-150 ease-out" />
+        
+          <Menu as="div" className="relative inline-block text-left">
+            <div>
+              <Menu.Button className="inline-flex w-full justify-center rounded-md outline-none  bg-white px-4 py-2 text-sm font-medium   focus:outline-none   ">
+                {/* Options
+                <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" /> */}
+                <EllipsisHorizontalIcon className="h-6   hover:scale-125   transition-all duration-150 ease-out" />
+              </Menu.Button>
+            </div>
 
+            <Transition
+              as={Fragment}
+              enter="transition ease-out duration-100"
+              enterFrom="transform opacity-0 scale-95"
+              enterTo="transform opacity-100 scale-100"
+              leave="transition ease-in duration-75"
+              leaveFrom="transform opacity-100 scale-100"
+              leaveTo="transform opacity-0 scale-95"
+            >
+              <Menu.Items className="absolute right-0 z-10 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <div className="py-1">
+                  <Menu.Item>
+                    {({ active }) => (
+                      <a
+                        href="#"
+                        className={classNames(
+                          active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                          'block px-4 py-2 text-sm'
+                        )}
+                      >
+                        Account settings
+                      </a>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <a
+                        href="#"
+                        className={classNames(
+                          active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                          'block px-4 py-2 text-sm'
+                        )}
+                      >
+                        Support
+                      </a>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <a
+                        href="#"
+                        className={classNames(
+                          active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                          'block px-4 py-2 text-sm'
+                        )}
+                      >
+                        License
+                      </a>
+                    )}
+                  </Menu.Item>
+                  <form method="POST" action="#">
+                    <Menu.Item>
+                      {({ active }) => (
+                        <button 
+                          type="submit" onClick={deletePost}
+                          className={classNames(
+                            active ? 'bg-gray-100 text-gray-900' : 'text-red-700',
+                            'block w-full px-4 py-2 text-left text-sm'
+                          )}
+                        >
+                          Delete Post
+                        </button>
+                      )}
+                    </Menu.Item>
+                  </form>
+                </div>
+              </Menu.Items>
+            </Transition>
+          </Menu>
         </div>
 
 

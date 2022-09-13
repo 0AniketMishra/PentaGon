@@ -19,6 +19,7 @@ function MyApp({ Component, pageProps}: any) {
         photoURL: user.photoURL, 
         username: user.displayName,
         phone: user.phoneNumber, 
+        uid: user.uid
     
 
       }, 

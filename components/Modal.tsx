@@ -29,17 +29,20 @@ function Modal() {
         posttext: captionRef.current.value, 
         profileImg: user.photoURL, 
           timestamp: firebase.firestore.FieldValue.serverTimestamp(), 
+          
       })
 
       console.log("New doc added wth ID", docRef.id); 
       const imageRef = ref(storage, `posts/${docRef.id}/image`)
-      await uploadString(imageRef, selectedFile, "data_url").then(async snapshot => {
-        const downloadURL = await getDownloadURL(imageRef)
+      if(selectedFile){
+          await uploadString(imageRef, selectedFile, "data_url").then(async snapshot => {
+              const downloadURL = await getDownloadURL(imageRef)
 
-        await updateDoc(doc(db, 'posts', docRef.id), {
-            image: downloadURL
-        })
-      }); 
+              await updateDoc(doc(db, 'posts', docRef.id), {
+                  image: downloadURL
+              })
+          }); 
+      }
 
       setOpen(false)
       setLoading(false)
