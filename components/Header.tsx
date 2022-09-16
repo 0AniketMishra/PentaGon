@@ -27,7 +27,7 @@ function Header() {
                 <div className='relative h-12 w-24 cursor-pointer'>
                     <div className="flex items-center ">
 
-                        <img src={user.photoURL} alt="" className=" ml-2 w-10 h-10 mt-2 rounded-full " />
+                        <img onClick={() => auth.signOut()} src={user.photoURL} alt="" className=" ml-2 w-10 h-10 mt-2 rounded-full " />
                         <h1 className="text-xs text-center font-bold ml-2 hidden lg:inline-grid  mt-2">{user.displayName}</h1>
                     </div>
                 </div>

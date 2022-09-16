@@ -29,9 +29,9 @@ function MyApp({ Component, pageProps}: any) {
     }
   }, [user])
     
-  
+  if (loading) return <Loading />
   if(!user) return <Login/>
-  if(loading) return <Loading/>
+
   return (
     <RecoilRoot>
     <Component {...pageProps}/>
