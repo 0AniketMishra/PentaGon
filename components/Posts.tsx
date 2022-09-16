@@ -23,7 +23,7 @@ function Posts() {
     e.preventDefault()
   }
 
-  console.log(posts)
+  console.log()
 
     
     
@@ -41,6 +41,7 @@ function Posts() {
         img={post.data().image}
         posttext={post.data().posttext}
         timestamp={post.data().timestamp}
+        uid={post.data().uid}
         />
       ))}
     </div>

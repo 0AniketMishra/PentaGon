@@ -3,7 +3,7 @@ import { ArrowsRightLeftIcon, ChatBubbleOvalLeftEllipsisIcon, EllipsisHorizontal
 import {
 
 } from '@heroicons/react/24/solid'
-import { onSnapshot, collection, addDoc,doc, deleteDoc, setDoc, query, orderBy } from '@firebase/firestore'
+import { onSnapshot, collection, addDoc,doc, deleteDoc, setDoc, query, orderBy, where,getDocs} from '@firebase/firestore'
 import { db } from '../firebase';
 import firebase  from '@firebase/app-compat';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -13,6 +13,9 @@ import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import Posts from './Posts';
+import Link from 'next/link'
+import { userInfo } from 'os';
+import chats from '../pages/chats'
 
 function Post(
   {
@@ -21,7 +24,8 @@ function Post(
     userImg, 
     img, 
     posttext,
-    timestamp
+    timestamp, 
+    uid
   }
 
 ) {
@@ -30,19 +34,29 @@ function Post(
   const [comment , setComment] = useState("");
   const [likes, setLikes] = useState([])
   const [hasLiked, setHasLiked] = useState(false)
-
-
+  const [verify, setVerify] = useState([])
+  const [verified, setVerified] = useState(false)
+  const [userinfo, setUserinfo] = useState("")
   useEffect(() => onSnapshot(collection(db, 'posts', id, 'likes'), (snapshot) => 
   setLikes(snapshot.docs)),[db, id]
   )
   
-
+ 
+  const userRef = collection(db, "users");
+  const postRef = collection(db, "posts" )
 
 useEffect(() => {
   setHasLiked(likes.findIndex(like => like.id === user.uid) !== -1)
 }, [likes])
-  
 
+useEffect(() => {
+  setVerified(verify.findIndex(post => post.id.uid === user.uid) !== -1)
+}, [verify])
+  
+const fetchUser = async (e) => {
+  e.preventDefault()
+  
+}
 
 
 
@@ -57,10 +71,41 @@ useEffect(() => {
 };
 
 
+
 const deletePost = async (e) => {
   e.preventDefault();
+  if(uid==user.uid){
+    await deleteDoc(doc(db, 'posts', id,));
+  }
+    
+    }
+
+    
+
+//   });
+
+    
+// }
+
+
+
+ const getusername = async (e) => {
+  e.preventDefault();
+   const q = query(userRef, where("username", "==", username));
+   const querySnapshot = await getDocs(q);
+   querySnapshot.forEach((doc) => {
+     // doc.data() is never undefined for query doc snapshots
+     console.log(doc.id, " => ", doc.data().username);
+    setUserinfo(doc.data().username)
+   });
+ 
+ }
+
+
   
-}
+  
+  
+
   useEffect(() => onSnapshot(query(collection(db, 'posts' , id , "comments"), orderBy('timestamp', 'desc')) , snapshot  => setComments(snapshot.docs)), [db, id])
   const sendComment = async (e) => {
     e.preventDefault();
@@ -79,12 +124,26 @@ const deletePost = async (e) => {
 
     })
 
+
+
   }
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
   }
+
+  
+
   return (
-  <div>
+
+    
+  
+
+      <div>
+       
+
+      
+
+
       <div className="ml-4 mr-4 mt-8 p-2 rounded-lg items-center border border-gray-200 lg:w-[85%]">
 
         <div className="flex items-center ">
@@ -95,12 +154,17 @@ const deletePost = async (e) => {
             </div>
             <div className=" items-center">
               <div className="flex items-center">
-                <h1 className="font-bold ml-2 hover:border-b cursor-pointer ">{username}</h1>
+                <Link href={'/users/'+ username}>
+                  <a>
+                    <h1 className="text-sm font-bold ml-2 hover:border-b cursor-pointer " >{username}</h1>
+
+                  </a>
+                </Link>
                 <img src="https://th.bing.com/th/id/R.9c88df48e24182943ba4945b92aa3704?rik=ng8QDZfIeaOAvg&riu=http%3a%2f%2fclipart-library.com%2fimages%2fgTeEegLRc.png&ehk=rFKFF6hVaGBnpA8yieOD6YZvrGTf6%2fiafNKrPlbD7a8%3d&risl=&pid=ImgRaw&r=0" className='w-4 ml-1 h-4' alt="" />
 
               </div>
               <div className="ml-2 flex">
-                <h1 className="text-xs font-bold">@{username.replace(/\s+/g, '').toLowerCase()}</h1>
+                <h1 className="text-xs semi-font-bold">@{username.replace(/\s+/g, '').toLowerCase()}</h1>
                 <h1 className="text-xs ml-2">  <Moment fromNow>{timestamp?.toDate()}</Moment></h1>
                 {/* <h1 className="text-xs ml-2"><TimeAgo className='text-xs ml-2'date={timestamp}/></h1> */}
 
@@ -178,19 +242,22 @@ const deletePost = async (e) => {
                     )}
                   </Menu.Item>
                   <form method="POST" action="#">
-                    <Menu.Item>
-                      {({ active }) => (
-                        <button 
-                          type="submit" onClick={deletePost}
-                          className={classNames(
-                            active ? 'bg-gray-100 text-gray-900' : 'text-red-700',
-                            'block w-full px-4 py-2 text-left text-sm'
-                          )}
-                        >
-                          Delete Post
-                        </button>
-                      )}
-                    </Menu.Item>
+                    {uid==user.uid &&(
+                      <Menu.Item>
+                        {({ active }) => (
+                          <button
+                            type="submit" onClick={deletePost}
+                            className={classNames(
+                              active ? 'bg-gray-100 text-gray-900' : 'text-red-700',
+                              'block w-full px-4 py-2 text-left text-sm'
+
+                            )}
+                          >
+                            Delete Post
+                          </button>
+                        )}
+                      </Menu.Item>
+                    )}
                   </form>
                 </div>
               </Menu.Items>
@@ -287,3 +354,9 @@ const deletePost = async (e) => {
 }
 
 export default Post
+
+export async function getStaticProps(userInfo) {
+  return {
+    props: {userInfo}, // will be passed to the page component as props
+  }
+}

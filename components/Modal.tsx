@@ -29,7 +29,7 @@ function Modal() {
         posttext: captionRef.current.value, 
         profileImg: user.photoURL, 
           timestamp: firebase.firestore.FieldValue.serverTimestamp(), 
-          
+          uid: user.uid
       })
 
       console.log("New doc added wth ID", docRef.id); 
@@ -138,8 +138,8 @@ function Modal() {
                                 </div>
 
                                 <div className="mt-2">
-                                    <input type="text" ref={captionRef}
-                                    className='border-none outline-none focus:ring-0 w-full text-center' 
+                                    <textarea  ref={captionRef}
+                                    className='border rounded-lg outline-none focus:ring-0 w-full p-2' 
                                     placeholder="Say Something..."/>
 
                                 </div>

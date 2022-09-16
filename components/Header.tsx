@@ -14,20 +14,21 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../firebase';
 import { modalState } from '../atoms/modalAtom';
 import { useRecoilState } from 'recoil';
+import Link from 'next/link'
 
 
 function Header() {
     const [user] = useAuthState(auth);
     const [Open, setOpen] = useRecoilState(modalState)
-  
+
     return (
         <div className=" sticky top-0 bg-white">
             <div className="flex justify-between max-w-6xl  mx-5 lg:mx-auto ">
                 <div className='relative h-12 w-24 cursor-pointer'>
                     <div className="flex items-center ">
 
-                        <img src={user.photoURL} alt="" className="w-10  mt-2 rounded-full " />
-                        <h1 className="text-xs text-center font-bold ml-2 hidden lg:inline-grid  mt-2">{user.displayName}</h1> 
+                        <img src={user.photoURL} alt="" className=" ml-2 w-10 h-10 mt-2 rounded-full " />
+                        <h1 className="text-xs text-center font-bold ml-2 hidden lg:inline-grid  mt-2">{user.displayName}</h1>
                     </div>
                 </div>
 
@@ -40,13 +41,18 @@ function Header() {
                         </div>
                     </div>
                 </div>
-                <div className="flex  items-center space-x-2 mr-4">
+                <div className="flex  items-center space-x-2 ">
+
                     
-                    <ArrowPathRoundedSquareIcon className="w-6 h-6 hover:scale-125   transition-all duration-150 ease-out" />
-                    <PlusIcon onClick={() => setOpen(true)} className=' hidden md:inline-flex w-6 h-6 hover:scale-125 transition-all duration-150 ease-out' />
+                    
                     <PlusIcon onClick={() => setOpen(true)} className='  w-6 h-6 hover:scale-125 transition-all duration-150 ease-out' />
-                    <BellIcon className='w-6 h-6 hover:scale-125 transition-all duration-150 ease-out' />
-                    <UserGroupIcon className=" hidden md:inline-flex w-6 h-6 hover:scale-125 transition-all duration-150 ease-out" />
+                    {/* <BellIcon className='w-6 h-6 hover:scale-125 transition-all duration-150 ease-out' /> */}
+                    <Link href="/chats" >
+                        <a className="flex items-center    hover:scale-125 transition-all duration-150 ease-out max-w-fit p-2  group relative text-black before:absolute before:inset-x-0 before:bottom-0 before:h-2 before:origin-right before:scale-x-0 before:text-cyan-100 before:transition before:duration-200 hover:before:origin-left hover:before:scale-x-100">
+                            <UserGroupIcon className="   w-6 h-6 " />
+                           
+                        </a>
+                    </Link>
                     {/* <img src="https://static.vecteezy.com/system/resources/previews/000/550/731/original/user-icon-vector.jpg" alt="" className="w-10 h-10"/> */}
                 </div>
             </div>

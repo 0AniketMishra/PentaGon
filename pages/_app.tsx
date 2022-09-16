@@ -7,6 +7,7 @@ import "firebase/compat/firestore";
 import { useEffect } from 'react';
 import Login from './login';
 import {RecoilRoot} from "recoil"
+import Loading from '../components/Loading';
 
 
 function MyApp({ Component, pageProps}: any) {
@@ -19,7 +20,8 @@ function MyApp({ Component, pageProps}: any) {
         photoURL: user.photoURL, 
         username: user.displayName,
         phone: user.phoneNumber, 
-        uid: user.uid
+        uid: user.uid,
+        slug: user.displayName.replace(/\s+/g, '').toLowerCase()
     
 
       }, 
@@ -29,9 +31,11 @@ function MyApp({ Component, pageProps}: any) {
     
   
   if(!user) return <Login/>
+  if(loading) return <Loading/>
   return (
     <RecoilRoot>
     <Component {...pageProps}/>
+    
     </RecoilRoot>
   
 )
