@@ -33,15 +33,15 @@ function Posts() {
   return (
     <div>
       {posts.map((post) => (
-        <Post 
-        key={post.id}
-        id={post.id}
-        username={post.data().username}
-        userImg={post.data().profileImg}
-        img={post.data().image}
-        posttext={post.data().posttext}
-        timestamp={post.data().timestamp}
-        uid={post.data().uid}
+        <Post
+          key={post.id}
+          id={post.id}
+          username={post.data().username}
+          userImg={post.data().profileImg}
+          img={post.data().image}
+          posttext={post.data().posttext}
+          timestamp={post.data().timestamp}
+          uid={post.data().uid}
         />
       ))}
     </div>

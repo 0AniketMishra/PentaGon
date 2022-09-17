@@ -7,9 +7,9 @@ function MiniProfile() {
   
   const [user] = useAuthState(auth);
   return (
-    <div className="flex border p-2 rounded-lg items-center justify-between mt-14  mr-10">
+    <div className="flex bg-gray-100 p-2 rounded-lg items-center justify-between ml-10 w-[85%] mr-10">
           
-          <img src={user.photoURL} alt="" className="w-16 h-16 rounded-full border p-[2px]" />
+          <img src={user.photoURL} alt="" className="w-26 h-16 rounded-full border p-[2px]" />
           <div className="flex-1 mx-4">
             <h2 className="font-bold">{user.displayName}</h2>
             <h3 className="text-sm text-gray-400">Welcome to PentaGon</h3>

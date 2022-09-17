@@ -11,6 +11,7 @@ import { auth } from '../firebase';
 import firebase from '@firebase/app-compat';
 import "firebase/compat/firestore";
 import {ref, getDownloadURL, uploadString} from '@firebase/storage'
+import toast from 'react-hot-toast'
 
 
 function Modal() {
@@ -22,7 +23,14 @@ function Modal() {
     const [user] = useAuthState(auth);
 
     const uploadPost = async () => {
-      if(loading) return; 
+       
+ 
+        
+      if(loading) return;
+        const refreshToast = toast.loading("Uploading Post...")
+        toast.success('Post Uploaded Successfully! 🎉', {
+            id: refreshToast
+        })
       setLoading(true)
       const docRef = await addDoc(collection(db, "posts"), {
         username: user.displayName, 
@@ -30,8 +38,9 @@ function Modal() {
         profileImg: user.photoURL, 
           timestamp: firebase.firestore.FieldValue.serverTimestamp(), 
           uid: user.uid
+          
       })
-
+       
       console.log("New doc added wth ID", docRef.id); 
       const imageRef = ref(storage, `posts/${docRef.id}/image`)
       if(selectedFile){
@@ -43,7 +52,7 @@ function Modal() {
               })
           }); 
       }
-
+        
       setOpen(false)
       setLoading(false)
       setSelectedFile(null)
@@ -60,7 +69,9 @@ function Modal() {
     }
     
     return (
+      
         <Transition.Root show={Open} as={Fragment}>
+           
             <Dialog
                 as="div"
                 className="fixed z-10 inset-0 overflow-y-auto"
@@ -98,7 +109,7 @@ function Modal() {
 
                         <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all  sm:my-8 sm:align-middle sm:max-w-sm sm:w-full">
                             <div>
-
+                           
                                 {selectedFile ? (
                                  <img src={selectedFile} onClick={() => setSelectedFile(null) 
                                 } 

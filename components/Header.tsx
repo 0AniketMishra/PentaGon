@@ -23,9 +23,9 @@ function Header() {
 
     return (
         <div className=" sticky top-0 bg-white">
-            <div className="flex justify-between max-w-6xl  mx-5 lg:mx-auto ">
+            <div className="flex justify-between max-w-7xl  mx-5 lg:mx-auto ">
                 <div className='relative h-12 w-24 cursor-pointer'>
-                    <div className="flex items-center ">
+                    <div className="flex items-center lg:ml-6">
 
                         <img onClick={() => auth.signOut()} src={user.photoURL} alt="" className=" ml-2 w-10 h-10 mt-2 rounded-full " />
                         <h1 className="text-xs text-center font-bold ml-2 hidden lg:inline-grid  mt-2">{user.displayName}</h1>
@@ -41,7 +41,7 @@ function Header() {
                         </div>
                     </div>
                 </div>
-                <div className="flex  items-center space-x-2 ">
+                <div className="flex  items-center space-x-2 lg:mr-6">
 
                     
                     

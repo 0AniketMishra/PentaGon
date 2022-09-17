@@ -17,6 +17,7 @@ import Link from 'next/link'
 import { userInfo } from 'os';
 import chats from '../pages/chats'
 
+import toast from 'react-hot-toast'
 function Post(
   {
     id, 
@@ -29,6 +30,7 @@ function Post(
   }
 
 ) {
+  const [commentBoxVisible, setCommentBoxVisible] = useState<boolean>(false)
   const [user] = useAuthState(auth);
   const [comments, setComments] = useState([])
   const [comment , setComment] = useState("");
@@ -75,9 +77,13 @@ const fetchUser = async (e) => {
 const deletePost = async (e) => {
   e.preventDefault();
   if(uid==user.uid){
+    const refreshToast = toast.loading("Deleting Post...")
     await deleteDoc(doc(db, 'posts', id,));
+    toast.success('Post Deleted Successfully', {
+      id: refreshToast
+    })
   }
-    
+  
     }
 
     
@@ -144,7 +150,7 @@ const deletePost = async (e) => {
       
 
 
-      <div className="ml-4 mr-4 mt-8 p-2 rounded-lg items-center border border-gray-200 lg:w-[85%]">
+      <div className="ml-4 mr-4 mt-8 p-2 rounded-lg items-center  border border-gray-200   ">
 
         <div className="flex items-center ">
           <div className="flex  items-center ">
@@ -154,7 +160,7 @@ const deletePost = async (e) => {
             </div>
             <div className=" items-center">
               <div className="flex items-center">
-                <Link href={'/users/'+ username}>
+                <Link href={'/users/'+ uid}>
                   <a>
                     <h1 className="text-sm font-bold ml-2 hover:border-b cursor-pointer " >{username}</h1>
 
@@ -267,7 +273,7 @@ const deletePost = async (e) => {
 
 
         <div className="ml-4  mt-2 md:mr-4 ">
-          <h1 className="lg:w-[90%] mb-4">{posttext}</h1>
+          <h1 className="lg:w-[90%] mb-4 mt-4 ml-10">{posttext}</h1>
           <div className="flex items-center space-x-4 p-2 " >
 
             <img src={img} alt="" className='w-96 rounded-lg ' />
@@ -275,26 +281,31 @@ const deletePost = async (e) => {
         </div>
 
         <div >
-          <div className=" mt-4 p-1 flex space-x-8 ml-6  justify-between  mr-4 ">
-            <div  className=" items-center hover:text-red-500  cursor-pointer hover:scale-125   transition-all duration-150 ease-out">
+          
+
+
+        
+
+          <div className=" mt-4 p-1 flex space-x-8 ml-6  justify-between  mr-4 mb-4">
+            <div className=" items-center hover:text-red-500  cursor-pointer hover:scale-125   transition-all duration-150 ease-out">
               {hasLiked ? (
                 <div className='flex' onClick={likePost}>
                   <HeartIcon fill='red' className='h-6 text-red-500 ' />
                   <h1 className='ml-2'>{likes.length}</h1>
-               </div>
-              ): (
+                </div>
+              ) : (
                 <div>
-                    <div className='flex' onClick={likePost}>
-                      <HeartIcon  className='h-6 ' />
-                      <h1 className='ml-2'>{likes.length}</h1>
-                    </div>
+                  <div className='flex' onClick={likePost}>
+                    <HeartIcon className='h-6 ' />
+                    <h1 className='ml-2'>{likes.length}</h1>
+                  </div>
                 </div>
               )}
-             
+
             </div>
 
-            <div className="flex items-center hover:text-blue-500  hover:scale-125   transition-all duration-150 ease-out">
-              <ChatBubbleOvalLeftEllipsisIcon className='h-6 ' />
+            <div onClick={() => setCommentBoxVisible(!commentBoxVisible)}  className=" cursor-pointer flex items-center hover:text-blue-500  hover:scale-125   transition-all duration-150 ease-out">
+              <ChatBubbleOvalLeftEllipsisIcon className='h-6 '  />
               <h1 className='ml-2'>{comments.length}</h1>
             </div>
             <div className="flex items-center hover:text-purple-500  hover:scale-125   transition-all duration-150 ease-out">
@@ -306,10 +317,11 @@ const deletePost = async (e) => {
 
             <ShareIcon className='h-6 hover:scale-125   transition-all duration-150 ease-out  hover:text-green-500' />
           </div>
-
-
+        </div>
+     
+        {commentBoxVisible && (
           <div>
-            <form action="" className="flex items-center p-4 mt-4  mb-4border-t">
+            <form action="" className="flex items-center p-2 mt-4  mb-2">
               <FaceSmileIcon className='h-7' />
               <input
                 type="text"
@@ -322,29 +334,31 @@ const deletePost = async (e) => {
             </form>
 
             {comments.length > 0 && (
-              <div className='ml-2 items-center mt-2 h-28 overflow-y-scroll '>
-                {comments.map(comment => (
-                  <div key={comment.id} className=" space-x-2 mb-3 " >
-                    <div className="flex items-center ">
-                      <img src={comment.data().userImage} alt="" className='h-7 border  rounded-full' />
-                      <span className="font-bold text-sm ml-2">{comment.data().username + " : "}</span>
-                      <h1 className="flex-1"></h1>
-                    <Moment className="text-xs ml-2" fromNow>{comment.data().timestamp?.toDate()}</Moment>
+              <div>
+                <h1 className='font-bold  mb-4 mt-4 text-lg ml-2'>Comments - </h1>
+                <div className='ml-2 items-center mt-6 h-46 overflow-y-scroll  '>
+
+                  {comments.map(comment => (
+                    <div key={comment.id} className=" space-x-2 mb-3 " >
+                      <div className="flex items-center ">
+                        <img src={comment.data().userImage} alt="" className='h-7 border  rounded-full' />
+                        <span className="font-bold text-sm ml-2">{comment.data().username + " : "}</span>
+                        <h1 className="flex-1"></h1>
+                        <Moment className="text-xs mr-6" fromNow>{comment.data().timestamp?.toDate()}</Moment>
+                      </div>
+
+
+                      <p className=" spacex-2 px-6">{comment.data().comment}</p>
+
+
                     </div>
-                
-                    
-                      <p className="mt-2 spacex-2">{comment.data().comment}</p>
-                     
-                    
-                    </div>
-                ))}
+
+                  ))}
+                </div>
               </div>
             )}
           </div>
-
-
-        </div>
-
+        )}
 
       </div>
 
