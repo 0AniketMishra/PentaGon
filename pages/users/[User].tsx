@@ -1,11 +1,12 @@
 import { useRouter } from 'next/router'
 import {useEffect, useState} from 'react'
-import {doc, getDoc,  } from "firebase/firestore";
+import {doc, getDoc, onSnapshot, collection, deleteDoc, setDoc} from "firebase/firestore";
 import {db}  from '../../firebase'
 import Header from '../../components/Header';
 import MiniProfile from '../../components/MiniProfile';
 import Suggestions from '../../components/Suggestions';
-
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '../../firebase';
 import { BellIcon, EllipsisHorizontalCircleIcon, EyeIcon } from '@heroicons/react/24/outline';
 import Moment from 'react-moment';
 
@@ -17,6 +18,9 @@ const User = (data) => {
     const [uid, setUid] = useState("")
     const [photoUrl, setPhotoUrl] = useState("")
     const [timestamp, setTimestamp] = useState("")
+    const [followers, setFollowers] = useState([])
+    const [hasFollowed, setHasFollowed] = useState(false)
+    const [user] = useAuthState(auth);
 
       useEffect(() => {
           ;(async () => {
@@ -33,8 +37,26 @@ const User = (data) => {
           })()
       }, [])
     
+    useEffect(() => onSnapshot(collection(db, 'users', pid, 'followers'), (snapshot) =>
+        setFollowers(snapshot.docs)), [db]
+    )
+    useEffect(() => {
+        setHasFollowed(followers.findIndex(follower => follower.id === user.uid) !== -1)
+    }, [followers])
+
+
+
+    const followUser = async () => {
       
-   
+        if (hasFollowed && pid==user.uid) {
+            await deleteDoc(doc(db, 'users', pid ,  'followers', user.uid));
+        } else {
+            console.log("This portion was executed!")
+            await setDoc(doc(db, 'users', pid , 'followers', user.uid), {
+                username: user.displayName,
+            });
+        }
+    };
    
 
   
@@ -51,18 +73,28 @@ const User = (data) => {
                             <div className=" w-full   bg-white  shadow-lg    transform   duration-200 easy-in-out">
                                
                                
-                                <div className=" h-40 overflow-hidden" >
+                                <div className=" h-48 overflow-hidden" >
                                     <img className="w-full " src="https://images.unsplash.com/photo-1605379399642-870262d3d051?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80" alt="" />
                                    
                                 </div>
                                
                                 <div className="flex justify-between px-5  -mt-12">
                                     <img className="h-28 w-28 bg-white p-1 rounded-full  ml-4 " src={photoUrl} alt="" />
-                                   <div className='flex space-x-4 '>
-                                        {/* <EllipsisHorizontalCircleIcon className="w-8  mt-8 h-8 bg-white rounded-full"/> */}
-                                        <button className='hover:bg-white border-blue-500 border bg-blue-500 text-white w-20 h-10  mt-7 hover:text-blue-500  rounded-full p-1 hover:border-blue-500 font-bold '>Follow</button>
-                                        
-                                   </div>
+                                    {pid != user.uid && (
+                                        <div className='flex space-x-4 '>
+                                            {/* <EllipsisHorizontalCircleIcon className="w-8  mt-8 h-8 bg-white rounded-full"/> */}
+
+                                            {!hasFollowed ? (
+                                                <div className='flex' >
+                                                    <button onClick={followUser} className='hover:bg-white border-blue-500 border bg-blue-500 text-white w-20 h-10  mt-7 hover:text-blue-500  rounded-full p-1 hover:border-blue-500 font-bold '>Follow</button>
+                                                </div>
+                                            ) : (
+                                                <div>
+                                                    <button onClick={followUser} className='hover:bg-red-500 border-blue-500 border bg-blue-500 text-white w-24 h-10  mt-7 hover:text-white  rounded-full p-1 hover:border-red-500 font-bold '>Following</button>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
                                 </div>
                                
                                 
@@ -70,7 +102,7 @@ const User = (data) => {
                                     {/* If you want the text to be centered then add text-center in the div below */}
                                     <div className=" px-14">
                                        <div>
-                                            <h2 className="text-gray-800 text-2xl font-bold">{username}</h2>
+                                            <h2 className="text-gray-800 text-xl font-bold">{username}</h2>
                                             <a className="text-gray-400 mt-2 hover:text-blue-500" target="BLANK()">@{username.replace(/\s+/g, " ").toLowerCase()}</a>
                                        </div>
                                        <div className="flex mt-2 items-center">
@@ -80,7 +112,7 @@ const User = (data) => {
                                        </div>
                                        <div className="flex  space-x-10 mt-4 mb-4 font-bold"> 
                                          <h1>21 Following</h1>
-                                         <h1>5.3M Followers</h1>
+                                         <h1>{followers.length} Followers</h1>
                                        </div>
                                         <p className="mt-2 text-gray-500 text-sm">Hey There! I am on PentaGon</p>
                                     </div>
