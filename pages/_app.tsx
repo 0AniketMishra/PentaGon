@@ -21,8 +21,8 @@ function MyApp({ Component, pageProps}: any) {
         username: user.displayName,
         phone: user.phoneNumber, 
         uid: user.uid,
-        slug: user.displayName.replace(/\s+/g, '').toLowerCase()
-    
+        slug: user.displayName.replace(/\s+/g, '').toLowerCase(),
+       
 
       }, 
       {merge: true}); 
