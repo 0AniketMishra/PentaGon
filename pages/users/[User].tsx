@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router'
 import {useEffect, useState} from 'react'
-import { collection, query, where,doc, getDocs, connectFirestoreEmulator, getDoc, onSnapshot, getDocFromCache,  } from "firebase/firestore";
+import {doc, getDoc,  } from "firebase/firestore";
 import {db}  from '../../firebase'
 import Header from '../../components/Header';
 import MiniProfile from '../../components/MiniProfile';
 import Suggestions from '../../components/Suggestions';
-import UserProfile from '../../components/UserProfile';
+
 import { BellIcon, EllipsisHorizontalCircleIcon, EyeIcon } from '@heroicons/react/24/outline';
 import Moment from 'react-moment';
 
@@ -71,7 +71,7 @@ const User = (data) => {
                                     <div className=" px-14">
                                        <div>
                                             <h2 className="text-gray-800 text-2xl font-bold">{username}</h2>
-                                            <a className="text-gray-400 mt-2 hover:text-blue-500" target="BLANK()">@{username.replace(/\s+/g, '').toLowerCase()}</a>
+                                            <a className="text-gray-400 mt-2 hover:text-blue-500" target="BLANK()">@{username.replace(/\s+/g, " ").toLowerCase()}</a>
                                        </div>
                                        <div className="flex mt-2 items-center">
                                         <EyeIcon className="w-6 h-6 mr-1 "/>
@@ -82,7 +82,7 @@ const User = (data) => {
                                          <h1>21 Following</h1>
                                          <h1>5.3M Followers</h1>
                                        </div>
-                                        <p className="mt-2 text-gray-500 text-sm">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, </p>
+                                        <p className="mt-2 text-gray-500 text-sm">Hey There! I am on PentaGon</p>
                                     </div>
 
                                     
