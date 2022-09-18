@@ -42,14 +42,21 @@ function Header() {
                     </div>
                 </div>
                 <div className="flex  items-center space-x-2 lg:mr-6">
-
+                   
                     
-                    
+                   
                     <PlusIcon onClick={() => setOpen(true)} className='  w-6 h-6 hover:scale-125 transition-all duration-150 ease-out' />
+                    <Link href="/" >
+                        <a className="flex items-center">
+                            <HomeIcon className='  w-6 h-6 hover:scale-125 transition-all duration-150 ease-out' />
+
+                        </a>
+                    </Link>
+                    
                     {/* <BellIcon className='w-6 h-6 hover:scale-125 transition-all duration-150 ease-out' /> */}
                     <Link href="/chats" >
                         <a className="flex items-center    hover:scale-125 transition-all duration-150 ease-out max-w-fit p-2  group relative text-black before:absolute before:inset-x-0 before:bottom-0 before:h-2 before:origin-right before:scale-x-0 before:text-cyan-100 before:transition before:duration-200 hover:before:origin-left hover:before:scale-x-100">
-                            <UserGroupIcon className="   w-6 h-6 " />
+                            <UserGroupIcon className=" w-6 h-6 " />
                            
                         </a>
                     </Link>
