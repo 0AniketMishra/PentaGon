@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import {useEffect, useState} from 'react'
-import {doc, getDoc, onSnapshot, collection, deleteDoc, setDoc} from "firebase/firestore";
+import {doc, getDoc, onSnapshot, collection, deleteDoc, setDoc, query} from "firebase/firestore";
 import {db}  from '../../firebase'
 import Header from '../../components/Header';
 import MiniProfile from '../../components/MiniProfile';
@@ -9,6 +9,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase';
 import { BellIcon, EllipsisHorizontalCircleIcon, EyeIcon } from '@heroicons/react/24/outline';
 import Moment from 'react-moment';
+import { Tab } from '@headlessui/react';
 
 
 const User = (data) => {
@@ -20,6 +21,7 @@ const User = (data) => {
     const [timestamp, setTimestamp] = useState("")
     const [followers, setFollowers] = useState([])
     const [hasFollowed, setHasFollowed] = useState(false)
+    const [following, setFollowing] = useState([])
     const [user] = useAuthState(auth);
 
       useEffect(() => {
@@ -36,6 +38,8 @@ const User = (data) => {
 
           })()
       }, [])
+
+   
     
     useEffect(() => onSnapshot(collection(db, 'users', pid, 'followers'), (snapshot) =>
         setFollowers(snapshot.docs)), [db]
@@ -48,18 +52,70 @@ const User = (data) => {
 
     const followUser = async () => {
       
-        if (hasFollowed && pid==user.uid) {
+        if (hasFollowed && pid!=user.uid) {
             await deleteDoc(doc(db, 'users', pid ,  'followers', user.uid));
         } else {
-            console.log("This portion was executed!")
+
             await setDoc(doc(db, 'users', pid , 'followers', user.uid), {
                 username: user.displayName,
             });
+             setHasFollowed(false)
         }
     };
    
-
-  
+    let [categories] = useState({
+        Posts: [
+            {
+                id: 1,
+                title: 'Does drinking coffee make you smarter?',
+                date: '5h ago',
+                commentCount: 5,
+                shareCount: 2,
+            },
+            {
+                id: 2,
+                title: "So you've bought coffee... now what?",
+                date: '2h ago',
+                commentCount: 3,
+                shareCount: 2,
+            },
+        ],
+        Popular: [
+            {
+                id: 1,
+                title: 'Is tech making coffee better or worse?',
+                date: 'Jan 7',
+                commentCount: 29,
+                shareCount: 16,
+            },
+            {
+                id: 2,
+                title: 'The most innovative things happening in coffee',
+                date: 'Mar 19',
+                commentCount: 24,
+                shareCount: 12,
+            },
+        ],
+        Trending: [
+            {
+                id: 1,
+                title: 'Ask Me Anything: 10 answers to your questions about coffee',
+                date: '2d ago',
+                commentCount: 9,
+                shareCount: 5,
+            },
+            {
+                id: 2,
+                title: "The worst advice we've ever heard about coffee",
+                date: '4d ago',
+                commentCount: 1,
+                shareCount: 2,
+            },
+        ],
+    })
+    function classNames(...classes) {
+        return classes.filter(Boolean).join(' ')
+    }
 
   
     return( 
@@ -69,8 +125,8 @@ const User = (data) => {
                
                 <section className="lg:col-span-6 md:col-span-6 ">
                     <div className='rounded-lg'>
-                        <div className=" bg-gray-200  mt-6   flex flex-wrap items-start  justify-center  ">
-                            <div className=" w-full   bg-white  shadow-lg    transform   duration-200 easy-in-out">
+                        <div className=" bg-gray-200  mt-6   flex   justify-center  ">
+                            <div className=" w-full   bg-white  shadow-lg  ">
                                
                                
                                 <div className=" h-48 overflow-hidden" >
@@ -118,14 +174,69 @@ const User = (data) => {
                                     </div>
 
                                     
-                                    <hr className="mt-6" />
-                                    <div className="flex  ">
-                                        <div className="text-center w-1/2 p-4  cursor-pointer hover:bg-gray-100">
-                                            <p className="font-semibold"><span >15 </span>Posts</p>
-                                        </div>
-                                        
-                                        <div className="text-center w-1/2 p-4  cursor-pointer hover:bg-gray-100">
-                                            <p className="font-semibold"> <span>2.0 k </span></p>
+                                  
+                                    <div className="flex mt-6 ">
+                                        <div className="w-full  px-2  sm:px-0 ml-12 mr-12">
+                                            <Tab.Group>
+                                                <Tab.List className="flex space-x-1 rounded-xl bg-blue-900 p-1">
+                                                    {Object.keys(categories).map((category) => (
+                                                        <Tab
+                                                            key={category}
+                                                            className={({ selected }) =>
+                                                                classNames(
+                                                                    'w-full   rounded-lg py-2.5 text-sm font-bold ',
+                                                                    ' ',
+                                                                    selected
+                                                                        ? 'bg-white shadow'
+                                                                        : 'text-blue-100 hover:bg-white/[0.12] hover:text-white'
+                                                                )
+                                                            }
+                                                        >
+                                                            {category}
+                                                        </Tab>
+                                                    ))}
+                                                </Tab.List>
+                                                <Tab.Panels className="mt-2">
+                                                    {Object.values(categories).map((posts, idx) => (
+                                                        <Tab.Panel
+                                                            key={idx}
+                                                            className={classNames(
+                                                                'rounded-xl bg-white p-3',
+                                                                'ring-white ring-opacity-60 ring-offset-2 focus:outline-none focus:ring-2'
+                                                            )}
+                                                        >
+                                                            <ul>
+                                                                {posts.map((post) => (
+                                                                    <li
+                                                                        key={post.id}
+                                                                        className="relative rounded-md p-3 hover:bg-gray-100"
+                                                                    >
+                                                                        <h3 className="text-sm font-medium leading-5">
+                                                                            {post.title}
+                                                                        </h3>
+
+                                                                        <ul className="mt-1 flex space-x-1 text-xs font-normal leading-4 text-gray-500">
+                                                                            <li>{post.date}</li>
+                                                                            <li>&middot;</li>
+                                                                            <li>{post.commentCount} comments</li>
+                                                                            <li>&middot;</li>
+                                                                            <li>{post.shareCount} shares</li>
+                                                                        </ul>
+
+                                                                        <a
+                                                                            href="#"
+                                                                            className={classNames(
+                                                                                'absolute inset-0 rounded-md',
+                                                                                'ring-blue-400 focus:z-10 focus:outline-none focus:ring-2'
+                                                                            )}
+                                                                        />
+                                                                    </li>
+                                                                ))}
+                                                            </ul>
+                                                        </Tab.Panel>
+                                                    ))}
+                                                </Tab.Panels>
+                                            </Tab.Group>
                                         </div>
 
                                     </div>

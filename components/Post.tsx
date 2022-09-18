@@ -273,7 +273,7 @@ const deletePost = async (e) => {
 
 
         <div className="ml-4  mt-2 md:mr-4 ">
-          <h1 className="lg:w-[90%] mb-4 mt-4 ml-4">{posttext}</h1>
+          <h1 className="lg:w-[90%] mb-4 mt-4 ml-4 text-lg">{posttext}</h1>
           <div className="flex items-center space-x-4 p-2 " >
 
             <img src={img} alt="" className='w-96 rounded-lg ' />
@@ -287,7 +287,7 @@ const deletePost = async (e) => {
         
 
           <div className=" mt-4 p-1 flex space-x-8 ml-6  justify-between  mr-4 mb-4">
-            <div className=" items-center hover:text-red-500  cursor-pointer hover:scale-125   transition-all duration-150 ease-out">
+            <div className=" items-center hover:text-red-500  cursor-pointer ">
               {hasLiked ? (
                 <div className='flex' onClick={likePost}>
                   <HeartIcon fill='red' className='h-6 text-red-500 ' />
@@ -304,18 +304,18 @@ const deletePost = async (e) => {
 
             </div>
 
-            <div onClick={() => setCommentBoxVisible(!commentBoxVisible)}  className=" cursor-pointer flex items-center hover:text-blue-500  hover:scale-125   transition-all duration-150 ease-out">
+            <div onClick={() => setCommentBoxVisible(!commentBoxVisible)}  className=" cursor-pointer flex items-center hover:text-blue-500 ">
               <ChatBubbleOvalLeftEllipsisIcon className='h-6 '  />
               <h1 className='ml-2'>{comments.length}</h1>
             </div>
-            <div className="flex items-center hover:text-purple-500  hover:scale-125   transition-all duration-150 ease-out">
+            <div className="flex items-center hover:text-purple-500  ">
               <ArrowsRightLeftIcon className='h-6 ' />
               <h1 className='ml-2'>3.2K</h1>
             </div>
 
 
 
-            <ShareIcon className='h-6 hover:scale-125   transition-all duration-150 ease-out  hover:text-green-500' />
+            <ShareIcon className='h-6   hover:text-green-500' />
           </div>
         </div>
      
@@ -336,7 +336,7 @@ const deletePost = async (e) => {
             {comments.length > 0 && (
               <div>
                 <h1 className='font-bold  mb-4 mt-4 text-lg ml-2'>Comments - </h1>
-                <div className='ml-2 items-center mt-6 h-46 overflow-y-scroll  '>
+                <div className='ml-2 items-center mt-6 h-46 overflow-y-scroll  scrollbar-hide'>
 
                   {comments.map(comment => (
                     <div key={comment.id} className=" space-x-2 mb-3 " >

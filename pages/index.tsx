@@ -9,17 +9,18 @@ function Home() {
  
   return (
     
-    <div>
+    <div className="h-screen overflow-y-scroll scrollbar-hide">
       <Head>
         <title>Home | PentaGon</title>
       </Head>
 
+     
+      <Modal />
+        <Header/>
       <Toaster
         position="top-center"
         reverseOrder={false}
       />
-      <Modal />
-        <Header/>
         <Feed/>
        
     </div>
