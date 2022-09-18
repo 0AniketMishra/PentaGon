@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import {useEffect, useState} from 'react'
-import {doc, getDoc, onSnapshot, collection, deleteDoc, setDoc, query} from "firebase/firestore";
+import {doc, getDoc, onSnapshot, collection, deleteDoc, setDoc, query, where, getDocs} from "firebase/firestore";
 import {db}  from '../../firebase'
 import Header from '../../components/Header';
 import MiniProfile from '../../components/MiniProfile';
@@ -12,7 +12,9 @@ import Moment from 'react-moment';
 import { Tab } from '@headlessui/react';
 
 
-const User = (data) => {
+const User = (data,  {
+    id,
+}) => {
     const router = useRouter()
     const pid  = router.query.User as string
     const [username, setUsername] = useState("")
@@ -23,6 +25,7 @@ const User = (data) => {
     const [hasFollowed, setHasFollowed] = useState(false)
     const [following, setFollowing] = useState([])
     const [user] = useAuthState(auth);
+    const [userPost, setUserPost] = useState([])
 
       useEffect(() => {
           ;(async () => {
@@ -30,8 +33,7 @@ const User = (data) => {
             const snapshots = await getDoc(docRef)
             const username = snapshots.data().username
             const photoURL = snapshots.data().photoURL
-            const timestamp = snapshots.data().lastSeen.seconds
-            console.log(timestamp)
+            
             setUsername(username)
             setPhotoUrl(photoURL)
             setTimestamp(timestamp)
@@ -39,7 +41,18 @@ const User = (data) => {
           })()
       }, [])
 
-   
+    useEffect(() => {
+        ;(async () => {
+            const docRef = collection(db, "posts");
+            const snapshots = query(docRef, where("uid", "==", pid));
+            const querySnapshot = await getDocs(snapshots);
+            querySnapshot.forEach((doc) => {
+                // doc.data() is never undefined for query doc snapshots
+                console.log(doc.id, " => ", doc.data());
+            });
+
+        })
+    })
     
     useEffect(() => onSnapshot(collection(db, 'users', pid, 'followers'), (snapshot) =>
         setFollowers(snapshot.docs)), [db]
@@ -65,20 +78,7 @@ const User = (data) => {
    
     let [categories] = useState({
         Posts: [
-            {
-                id: 1,
-                title: 'Does drinking coffee make you smarter?',
-                date: '5h ago',
-                commentCount: 5,
-                shareCount: 2,
-            },
-            {
-                id: 2,
-                title: "So you've bought coffee... now what?",
-                date: '2h ago',
-                commentCount: 3,
-                shareCount: 2,
-            },
+            
         ],
         Popular: [
             {
@@ -178,17 +178,17 @@ const User = (data) => {
                                     <div className="flex mt-6 ">
                                         <div className="w-full  px-2  sm:px-0 ml-12 mr-12">
                                             <Tab.Group>
-                                                <Tab.List className="flex space-x-1 rounded-xl bg-blue-900 p-1">
+                                                <Tab.List className="flex space-x-1 rounded-xl  bg-white p-1">
                                                     {Object.keys(categories).map((category) => (
                                                         <Tab
                                                             key={category}
                                                             className={({ selected }) =>
                                                                 classNames(
-                                                                    'w-full   rounded-lg py-2.5 text-sm font-bold ',
+                                                                    'w-full   rounded-lg py-2.5 text-sm font-bold text-white',
                                                                     ' ',
                                                                     selected
-                                                                        ? 'bg-white shadow'
-                                                                        : 'text-blue-100 hover:bg-white/[0.12] hover:text-white'
+                                                                        ? 'bg-blue-900 shadow'
+                                                                        : 'text-black hover:bg-white/[0.12] hover:text-blue-900'
                                                                 )
                                                             }
                                                         >
@@ -208,7 +208,7 @@ const User = (data) => {
                                                             <ul>
                                                                 {posts.map((post) => (
                                                                     <li
-                                                                        key={post.id}
+                                                                        
                                                                         className="relative rounded-md p-3 hover:bg-gray-100"
                                                                     >
                                                                         <h3 className="text-sm font-medium leading-5">
