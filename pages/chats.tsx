@@ -6,7 +6,7 @@ import Header from '../components/Header'
 import MiniProfile from '../components/MiniProfile'
 import Stories from '../components/Stories'
 import Suggestions from '../components/Suggestions'
-import Modal from '../components/Modal'
+import ChatModal from '../components/ChatModal'
 import { RecoilRoot } from "recoil"
 
 function chats({userInfo}) {
@@ -14,7 +14,7 @@ function chats({userInfo}) {
 
    <div>
         <RecoilRoot>
-        <Modal />
+        <ChatModal />
         <Header />
         <main className='grid grid-cols-1 md:grid-cols-10 lg:grid-cols-9 lg:max-w-7xl mx-auto'>
           {/* Stories  */}
