@@ -22,6 +22,7 @@ function MyApp({ Component, pageProps}: any) {
         phone: user.phoneNumber, 
         uid: user.uid,
         slug: user.displayName.replace(/\s+/g, '').toLowerCase(),
+        lowerUsername: '@'+user.displayName.replace(/\s+/g, '').toLowerCase() 
        
 
       }, 

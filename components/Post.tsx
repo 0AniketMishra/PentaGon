@@ -112,7 +112,11 @@ const deletePost = async (e) => {
   
   
 
-  useEffect(() => onSnapshot(query(collection(db, 'posts' , id , "comments"), orderBy('timestamp', 'desc')) , snapshot  => setComments(snapshot.docs)), [db, id])
+  useEffect(() => onSnapshot(query(collection(db, 'posts' , id , "comments"), orderBy('timestamp', 'desc')) , snapshot  => 
+  
+  
+  
+  (snapshot.docs)), [db, id])
   const sendComment = async (e) => {
     e.preventDefault();
 
