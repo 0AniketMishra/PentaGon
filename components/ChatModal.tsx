@@ -86,15 +86,13 @@ function ChatModal() {
 
                                               {users.map(user => {
                                                   return (
-                                                    //   key = { user.id }
-
-                                                      <div className="mt-4 flex  items-center hover:bg-gray-100 p-2 rounded-lg">
+                                                      <div className="mt-4 flex  items-center hover:bg-gray-100 p-2 rounded-lg" key={user.id}>
                                               <div className="">
-                                                              <img src={user.data().photoURL} key={user.id} alt="" className='w-12 border p-1 rounded-full mr-2 '/>
+                                                <img src={user.data().photoURL} alt="" className='w-12 border p-1 rounded-full mr-2 '/>
                                               </div>
                                               <div>
-                                                              <h1 className='font-bold text-sm' key={user.id}>{user.data().username}</h1>
-                                                              <h1 className="text-xs" key={user.id}>{user.data().lowerUsername}</h1> 
+                                                              <h1 className='font-bold text-sm'>{user.data().username}</h1>
+                                                              <h1 className="text-xs">{user.data().lowerUsername}</h1> 
                                               </div>
                                                           <h1 className="flex-1"></h1>
                                                           <div>
