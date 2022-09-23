@@ -83,7 +83,7 @@ function ChatSidebar() {
                   <div className='flex items-center space-x-1  rounded-lg cursor-pointer ' >
                       {contacts.map(contact => {
                           return (
-                             <div>
+                             <div key={contact}>
                                 <h1>{contact.data().username}</h1>
                              </div>
                           )
