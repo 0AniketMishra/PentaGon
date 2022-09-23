@@ -14,19 +14,8 @@ import {db} from '../firebase'
 
 
 
-function chats({userInfo}) {
-  const [users, setUsers] = useState([])
+function chats({}) {
 
-  useEffect(() => {
-    ; (async () => {
-      onSnapshot(query(collection(db, 'users')),
-        snapshot => {
-          setUsers(snapshot.docs)
-        }
-      ),
-        [db]
-    })()
-  })  
 
 
   return (

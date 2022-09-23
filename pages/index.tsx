@@ -15,8 +15,9 @@ function Home() {
       </Head>
 
      
-      <Modal />
+    
         <Header/>
+      <Modal />
       <Toaster
         position="top-center"
         reverseOrder={false}

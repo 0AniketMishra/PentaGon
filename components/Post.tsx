@@ -39,6 +39,7 @@ function Post(
   const [verify, setVerify] = useState([])
   const [verified, setVerified] = useState(false)
   const [userinfo, setUserinfo] = useState("")
+
   useEffect(() => onSnapshot(collection(db, 'posts', id, 'likes'), (snapshot) => 
   setLikes(snapshot.docs)),[db, id]
   )
@@ -113,10 +114,8 @@ const deletePost = async (e) => {
   
 
   useEffect(() => onSnapshot(query(collection(db, 'posts' , id , "comments"), orderBy('timestamp', 'desc')) , snapshot  => 
-  
-  
-  
-  (snapshot.docs)), [db, id])
+  setComments(snapshot.docs)), [db, id])
+
   const sendComment = async (e) => {
     e.preventDefault();
 

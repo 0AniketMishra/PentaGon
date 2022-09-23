@@ -1,11 +1,12 @@
-import React from 'react'
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../firebase';
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../firebase";
 
 function Sidebar() {
+
     const [user] = useAuthState(auth);
+
   return (
-    <div className='hidden ml-8 lg:inline-flex w-56 '>
+    <div className="hidden ml-8 lg:inline-flex w-56 ">
           <div className=" rounded-2xl overflow-hidden border bg-white ">
               <img src="https://i.imgur.com/dYcYQ7E.png" className="" />
               <div className="flex ml-4 -mt-8">
@@ -13,7 +14,7 @@ function Sidebar() {
               </div>
               <div className="px-3 pb-6 pt-2 ml-4">
                   <h3 className="text-black text-sm bold font-bold">{user.displayName}</h3>
-                  <p className="mt-2 font-sans font-light text-black">Hello, i'm from another the other side!</p>
+                  <p className="mt-2 font-sans font-light text-black">Hello, i"m from another the other side!</p>
               </div>
               <div className="flex justify-center pb-3 text-black font-bold text-sm">
                   <div className="text-center mr-3 border-r pr-3 flex space-x-1 ">
