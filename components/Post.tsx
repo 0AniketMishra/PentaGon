@@ -290,7 +290,7 @@ const deletePost = async (e) => {
 
         
 
-          <div className=" mt-4 p-1 flex space-x-8 ml-6  justify-between  mr-4 mb-4">
+          <div className=" mt-4 p-1 flex space-x-8 ml-8  justify-between  mr-8 mb-4">
             <div className=" items-center hover:text-red-500  cursor-pointer ">
               {hasLiked ? (
                 <div className='flex' onClick={likePost}>

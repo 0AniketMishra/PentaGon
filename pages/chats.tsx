@@ -1,5 +1,5 @@
 import { PlusIcon } from '@heroicons/react/24/outline'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Chat from '../components/Chat'
 import ChatSidebar from '../components/ChatSidebar'
 import Header from '../components/Header'
@@ -8,8 +8,27 @@ import Stories from '../components/Stories'
 import Suggestions from '../components/Suggestions'
 import ChatModal from '../components/ChatModal'
 import { RecoilRoot } from "recoil"
+import { collection, onSnapshot, query } from 'firebase/firestore'
+import {db} from '../firebase'
+
+
+
 
 function chats({userInfo}) {
+  const [users, setUsers] = useState([])
+
+  useEffect(() => {
+    ; (async () => {
+      onSnapshot(query(collection(db, 'users')),
+        snapshot => {
+          setUsers(snapshot.docs)
+        }
+      ),
+        [db]
+    })()
+  })  
+
+
   return (
 
    <div>

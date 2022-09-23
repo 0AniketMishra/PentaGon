@@ -22,7 +22,7 @@ function Header() {
     const [Open, setOpen] = useRecoilState(modalState)
 
     return (
-        <div className=" sticky top-0 bg-white">
+        <div className=" sticky top-0 bg-white z-40">
             <div className="flex justify-between max-w-7xl  mx-5 lg:mx-auto ">
                 <div className='relative h-12 w-24 cursor-pointer'>
                     <div className="flex items-center lg:ml-6">
@@ -60,6 +60,8 @@ function Header() {
                            
                         </a>
                     </Link>
+
+                   
                     {/* <img src="https://static.vecteezy.com/system/resources/previews/000/550/731/original/user-icon-vector.jpg" alt="" className="w-10 h-10"/> */}
                 </div>
             </div>

@@ -15,16 +15,14 @@ import { ref, getDownloadURL, uploadString } from '@firebase/storage'
 import toast from 'react-hot-toast'
 import { chatModalState } from '../atoms/chatModalAtoms'
 import { onSnapshot, query } from 'firebase/firestore'
+import { setuid } from 'process'
+import  Link  from 'next/link'
 
 
 function ChatModal() {
     const [Open, setOpen] = useRecoilState(chatModalState)
-    const filePickerRef = useRef(null);
-    const [selectedFile, setSelectedFile] = useState(null);
-    const captionRef = useRef(null)
-    const [loading, setLoading] = useState(false);
-    const [user] = useAuthState(auth);
     const [users, setUsers] = useState([])
+    const [uid, setUid] = useState([])
 
 
     useEffect(() => {
@@ -37,7 +35,9 @@ function ChatModal() {
                 [db]
         })()
     })  
-
+const addNewUser = async () => {
+    console.log()
+}
 
   return (
       <div>
@@ -85,6 +85,8 @@ function ChatModal() {
                                 
 
                                               {users.map(user => {
+                                               
+                                               
                                                   return (
                                                       <div className="mt-4 flex  items-center hover:bg-gray-100 p-2 rounded-lg" key={user.id}>
                                               <div className="">
@@ -96,7 +98,13 @@ function ChatModal() {
                                               </div>
                                                           <h1 className="flex-1"></h1>
                                                           <div>
-                                                              <button className='text-xs font-bold bg-blue-900 text-white pb-1 pt-1 rounded-lg pl-2 pr-2'>Message</button>
+                                                              <Link href={'/users/' + uid}>
+                                                                  <a>
+                                                                      <button onClick={addNewUser} className='text-xs font-bold bg-blue-900 text-white pb-1 pt-1 rounded-lg pl-2 pr-2'>Message</button>
+
+                                                                  </a>
+                                                              </Link>
+                                                             
 
                                                           </div>
                                              </div>

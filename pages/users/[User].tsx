@@ -76,7 +76,14 @@ const User = (data,  {
         }
     };
    
-  
+  const ContactUser = async () => {
+    console.log("I am working!!")
+      await setDoc(doc(db, 'users', user.uid, 'Contacts', pid), {
+          username: username,
+          profileImg: photoUrl,
+          lowerUsername: '@' + username.replace(/\s+/g, '').toLowerCase()
+      }, { merge: true });
+  }
 
   
     return( 
@@ -100,16 +107,14 @@ const User = (data,  {
                                     {pid != user.uid && (
                                         <div className='flex space-x-4 '>
                                             {/* <EllipsisHorizontalCircleIcon className="w-8  mt-8 h-8 bg-white rounded-full"/> */}
-
-                                            {!hasFollowed ? (
+                                            <button onClick={ContactUser} className='hover:bg-white border-blue-500 border bg-blue-500 text-white w-24 h-10  mt-7 hover:text-green-500  rounded-full p-1 hover:border-green-500 font-bold '>Message</button>
+                                      
                                                 <div className='flex' >
-                                                    <button onClick={followUser} className='hover:bg-white border-blue-500 border bg-blue-500 text-white w-20 h-10  mt-7 hover:text-blue-500  rounded-full p-1 hover:border-blue-500 font-bold '>Follow</button>
+                                                <button onClick={followUser} className='hover:bg-white border-blue-500 border bg-blue-500 text-white w-20 h-10  mt-7 hover:text-blue-500  rounded-full p-1 hover:border-blue-500 font-bold '> {hasFollowed ? "Following" : "Follow"}</button>
                                                 </div>
-                                            ) : (
-                                                <div>
-                                                    <button onClick={followUser} className='hover:bg-red-500 border-blue-500 border bg-blue-500 text-white w-24 h-10  mt-7 hover:text-white  rounded-full p-1 hover:border-red-500 font-bold '>Following</button>
-                                                </div>
-                                            )}
+                                          
+
+                                           
                                         </div>
                                     )}
                                 </div>

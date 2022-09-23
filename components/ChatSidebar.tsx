@@ -21,6 +21,7 @@ function ChatSidebar() {
     const [newPhotoURL, setNewPhotoURL] = useState("")
     const [newID, setNewID] = useState("")
     const [users, setUsers] = useState([])
+    const [contacts, setContacts] = useState([])
     let newUser = useRef(null)
 
 
@@ -54,8 +55,19 @@ function ChatSidebar() {
           
         //             newUser = null
            
-        //  }
-    
+           useEffect(() => {
+          ;(async () => {
+
+              const q = query(collection(db, "users", user.uid, 'contacts'));
+
+              const querySnapshot = await getDocs(q);
+              querySnapshot.forEach((doc) => {
+                  // doc.data() is never undefined for query doc snapshots
+                  console.log(doc.id, " => ", doc.data());
+              });
+          })()
+      }, [])
+  
 
   return (
       <div className='mr-4 ml-4 ' >
@@ -66,10 +78,16 @@ function ChatSidebar() {
           {/* <h1 className='ml-3 font-bold mb-3 mt-4'>Chats - </h1> */}
 
           <div className='mt-4 border border-gray-300 rounded-lg p-2 '>
-              <h1 className='ml-3 font-bold mb-3'>Chats - </h1>
+              <h1 className='ml-3 font-bold mb-3'>Contacts - </h1>
               <div className='h-96 overflow-y-scroll scrollbar-hide'>
                   <div className='flex items-center space-x-1  rounded-lg cursor-pointer ' >
-
+                      {contacts.map(contact => {
+                          return (
+                             <div>
+                                <h1>{contact.data().username}</h1>
+                             </div>
+                          )
+                      })}
   
                       <div>
                          
