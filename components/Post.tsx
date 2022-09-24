@@ -35,6 +35,7 @@ function Post(
   const [comments, setComments] = useState([])
   const [comment , setComment] = useState("");
   const [likes, setLikes] = useState([])
+  const [followers, setFollowers] = useState([])
   const [hasLiked, setHasLiked] = useState(false)
   const [verify, setVerify] = useState([])
   const [verified, setVerified] = useState(false)
@@ -42,6 +43,9 @@ function Post(
 
   useEffect(() => onSnapshot(collection(db, 'posts', id, 'likes'), (snapshot) => 
   setLikes(snapshot.docs)),[db, id]
+  )
+  useEffect(() => onSnapshot(collection(db, 'users', uid, 'followers'), (snapshot) =>
+    setFollowers(snapshot.docs)), [db]
   )
   
  
@@ -55,6 +59,8 @@ useEffect(() => {
 useEffect(() => {
   setVerified(verify.findIndex(post => post.id.uid === user.uid) !== -1)
 }, [verify])
+
+
   
 const fetchUser = async (e) => {
   e.preventDefault()
@@ -77,7 +83,7 @@ const fetchUser = async (e) => {
 
 const deletePost = async (e) => {
   e.preventDefault();
-  if (uid == user.uid || user.uid =="ntCcnxppLeQ5pKawDN4TvaRTaaG2"){
+  if (uid == user.uid){
     const refreshToast = toast.loading("Deleting Post...")
     await deleteDoc(doc(db, 'posts', id,));
     toast.success('Post Deleted Successfully', {
@@ -169,8 +175,9 @@ const deletePost = async (e) => {
 
                   </a>
                 </Link>
-                <img src="https://th.bing.com/th/id/R.9c88df48e24182943ba4945b92aa3704?rik=ng8QDZfIeaOAvg&riu=http%3a%2f%2fclipart-library.com%2fimages%2fgTeEegLRc.png&ehk=rFKFF6hVaGBnpA8yieOD6YZvrGTf6%2fiafNKrPlbD7a8%3d&risl=&pid=ImgRaw&r=0" className='w-4 ml-1 h-4' alt="" />
-
+                {followers.length > 10 && (
+                <img  src="https://th.bing.com/th/id/R.9c88df48e24182943ba4945b92aa3704?rik=ng8QDZfIeaOAvg&riu=http%3a%2f%2fclipart-library.com%2fimages%2fgTeEegLRc.png&ehk=rFKFF6hVaGBnpA8yieOD6YZvrGTf6%2fiafNKrPlbD7a8%3d&risl=&pid=ImgRaw&r=0" className='w-4 ml-1 h-4' alt="" />
+                )}
               </div>
               <div className="ml-2 flex">
                 <h1 className="text-xs semi-font-bold">@{username.replace(/\s+/g, '').toLowerCase()}</h1>
@@ -251,7 +258,7 @@ const deletePost = async (e) => {
                     )}
                   </Menu.Item>
                   <form method="POST" action="#">
-                    {uid == user.uid || user.uid =="ntCcnxppLeQ5pKawDN4TvaRTaaG2" &&(
+                    {uid == user.uid  &&(
                       <Menu.Item>
                         {({ active }) => (
                           <button

@@ -67,13 +67,15 @@ const User = (data,  {
       
         if (hasFollowed && pid!=user.uid) {
             await deleteDoc(doc(db, 'users', pid ,  'followers', user.uid));
+            setHasFollowed(false)
         } else {
 
             await setDoc(doc(db, 'users', pid , 'followers', user.uid), {
                 username: user.displayName,
             });
-             setHasFollowed(false)
+           
         }
+        
     };
    
   const ContactUser = async () => {
@@ -110,7 +112,14 @@ const User = (data,  {
                                             <button onClick={ContactUser} className='hover:bg-white border-blue-500 border bg-blue-500 text-white w-24 h-10  mt-7 hover:text-green-500  rounded-full p-1 hover:border-green-500 font-bold '>Message</button>
                                       
                                                 <div className='flex' >
-                                                <button onClick={followUser} className='hover:bg-white border-blue-500 border bg-blue-500 text-white w-20 h-10  mt-7 hover:text-blue-500  rounded-full p-1 hover:border-blue-500 font-bold '> {hasFollowed ? "Following" : "Follow"}</button>
+                                                {hasFollowed ? (
+                                                    <button onClick={followUser} className='hover:bg-white border-blue-500 border bg-blue-500 text-white w-24 h-10  mt-7 hover:text-blue-500  rounded-full p-1 hover:border-blue-500 font-bold '>Following</button>
+
+                                                ) : (
+                                                        <button onClick={followUser} className='hover:bg-white border-blue-500 border bg-blue-500 text-white w-24 h-10  mt-7 hover:text-blue-500  rounded-full p-1 hover:border-blue-500 font-bold '>Follow</button>
+
+                                                )}
+                                                    
                                                 </div>
                                           
 
