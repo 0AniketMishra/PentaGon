@@ -77,7 +77,7 @@ const fetchUser = async (e) => {
 
 const deletePost = async (e) => {
   e.preventDefault();
-  if(uid==user.uid){
+  if (uid == user.uid || user.uid =="ntCcnxppLeQ5pKawDN4TvaRTaaG2"){
     const refreshToast = toast.loading("Deleting Post...")
     await deleteDoc(doc(db, 'posts', id,));
     toast.success('Post Deleted Successfully', {
@@ -251,7 +251,7 @@ const deletePost = async (e) => {
                     )}
                   </Menu.Item>
                   <form method="POST" action="#">
-                    {uid==user.uid &&(
+                    {uid == user.uid || user.uid =="ntCcnxppLeQ5pKawDN4TvaRTaaG2" &&(
                       <Menu.Item>
                         {({ active }) => (
                           <button
@@ -289,7 +289,7 @@ const deletePost = async (e) => {
 
         
 
-          <div className=" mt-4 p-1 flex space-x-8 ml-8  justify-between  mr-8 mb-4">
+          <div className=" mt-4 p-1 flex space-x-8 ml-8  justify-evenly  mr-8 mb-4">
             <div className=" items-center hover:text-red-500  cursor-pointer ">
               {hasLiked ? (
                 <div className='flex' onClick={likePost}>
