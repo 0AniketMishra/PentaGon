@@ -2,9 +2,9 @@ import { useRouter } from 'next/router'
 import {useEffect, useState} from 'react'
 import {doc, getDoc, onSnapshot, collection, deleteDoc, setDoc, query, where, getDocs} from "firebase/firestore";
 import {db}  from '../../firebase'
-import Header from '../../components/Header';
-import MiniProfile from '../../components/MiniProfile';
-import Suggestions from '../../components/Suggestions';
+import Header from '../../components/Common/Header';
+import MiniProfile from '../../components/Common/MiniProfile';
+import Suggestions from '../../components/Common/Suggestions';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase';
 import { BellIcon, EllipsisHorizontalCircleIcon, EyeIcon } from '@heroicons/react/24/outline';
@@ -33,7 +33,8 @@ const User = (data,  {
             const snapshots = await getDoc(docRef)
             const username = snapshots.data().username
             const photoURL = snapshots.data().photoURL
-            
+            const uid = snapshots.data().uid
+            setUid(uid)
             setUsername(username)
             setPhotoUrl(photoURL)
             setTimestamp(timestamp)
@@ -78,14 +79,23 @@ const User = (data,  {
         
     };
    
-  const ContactUser = async () => {
-    console.log("I am working!!")
-      await setDoc(doc(db, 'users', user.uid, 'Contacts', pid), {
-          username: username,
-          profileImg: photoUrl,
-          lowerUsername: '@' + username.replace(/\s+/g, '').toLowerCase()
-      }, { merge: true });
-  }
+//   const ContactUser = async () => {
+//     console.log("I am working!!")
+//       await setDoc(doc(db, 'users', user.uid, 'Contacts', username), {
+//           username: username,
+//           profileImg: photoUrl,
+     
+//           uid: pid
+//       }, { merge: true });
+//   }
+
+const ContactUser = async () => {
+    await setDoc(doc(db, 'userChat', user.uid,"Contacts", uid ), {
+        username: username,
+        uid: uid, 
+        photoURL: photoUrl,
+    }, {merge: true});
+}
 
   
     return( 
@@ -133,7 +143,12 @@ const User = (data,  {
                                     {/* If you want the text to be centered then add text-center in the div below */}
                                     <div className=" px-14">
                                        <div>
-                                            <h2 className="text-gray-800 text-xl font-bold">{username}</h2>
+                                         <div className='flex items-center'>
+                                                <h2 className="text-gray-800 text-xl font-bold">{username}</h2>
+                                                {followers.length > 10 && (
+                                                    <img src="https://th.bing.com/th/id/R.9c88df48e24182943ba4945b92aa3704?rik=ng8QDZfIeaOAvg&riu=http%3a%2f%2fclipart-library.com%2fimages%2fgTeEegLRc.png&ehk=rFKFF6hVaGBnpA8yieOD6YZvrGTf6%2fiafNKrPlbD7a8%3d&risl=&pid=ImgRaw&r=0" alt="" className='w-5 h-5 mt-1 ml-1' />
+                                                )}
+                                                    </div>
                                             <a className="text-gray-400 mt-2 hover:text-blue-500" target="BLANK()">@{username.replace(/\s+/g, " ").toLowerCase()}</a>
                                        </div>
                                        <div className="flex mt-2 items-center">
