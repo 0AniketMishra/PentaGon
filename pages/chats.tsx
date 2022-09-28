@@ -6,7 +6,7 @@ import Suggestions from '../components/Common/Suggestions'
 import ChatModal from '../components/Modal/ChatModal'
 import { RecoilRoot } from "recoil"
 
-function chats({ }) {
+function chats() {
 
   return (
     <div className=''>
