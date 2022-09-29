@@ -122,8 +122,7 @@ function Chat() {
                 <PaperClipIcon className="w-6" />
               </div>
               <input value={message} onChange={e => setMessage(e.target.value)} placeholder='Enter your message here' className='w-full outline-none border bg-gray-200 rounded-lg text-black p-2 ml-2 mr-2 h-10 scrollbar-hide ' />
-              <PaperAirplaneIcon onClick={sendMessage} type='submit' className='mr-2 h-8 cursor-pointer'/>
-              
+              <PaperAirplaneIcon onClick={sendMessage} type='submit' className='mr-2 h-8 cursor-pointer' />
             </div>
           </div>
         </div>
@@ -191,12 +190,14 @@ function Chat() {
         </div>
         <div className="">
           <div className=' mb-6 flex  ml-2 items-end  justify-center '>
-            <div className="flex items-center w-full ml-6 mr-6 mb-4">
-              <FaceSmileIcon className='w-6' />
-              <input value={message} onChange={e => setMessage(e.target.value)} placeholder='Enter your message here' className='w-full outline-none border bg-gray-200 rounded-lg text-black p-2 ml-2 mr-2 h-10 scrollbar-hide ' />
-              <button onClick={sendMessage} type='submit' className='mr-2 bg-blue-900 text-white font-semibold p-1 rounded-lg'>Send</button>
-              <PaperClipIcon className="w-6" />
-            </div>
+              <div className="flex items-center w-full ml-6 mr-6 mb-4">
+                <div className="flex space-x-2">
+                  <FaceSmileIcon className='w-6' />
+                  <PaperClipIcon className="w-6" />
+                </div>
+                <input value={message} onChange={e => setMessage(e.target.value)} placeholder='Enter your message here' className='w-full outline-none border bg-gray-200 rounded-lg text-black p-2 ml-2 mr-2 h-10 scrollbar-hide ' />
+                <PaperAirplaneIcon onClick={sendMessage} type='submit' className='mr-2 h-8 cursor-pointer' />
+              </div>
           </div>
         </div>
       </div>
