@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, EllipsisVerticalIcon, FaceSmileIcon, PaperClipIcon, PhoneIcon, VideoCameraIcon } from '@heroicons/react/24/outline'
+import { ArrowLeftIcon, EllipsisVerticalIcon, FaceSmileIcon, PaperAirplaneIcon, PaperClipIcon, PhoneIcon, VideoCameraIcon } from '@heroicons/react/24/outline'
 import { addDoc, collection, doc, getDoc, getDocs, onSnapshot, query, where } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -17,7 +17,8 @@ function Chat() {
   const [selectedChat, setSelectedChat] = useRecoilState(ChatAtomState)
   const [message, setMessage] = useState("");
   const [sentMessages, setSentMessages] = useState([])
-  const [selectedChatData, setSelectedChatData] = useState([]) 
+  const [selectedChatData, setSelectedChatData] = useState([])
+  const [selectedPhotoURL, setSelectedPhotoURL] = useState([]) 
 
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -25,7 +26,7 @@ function Chat() {
     setMessage('')
 
   
-
+     
 
     await addDoc(collection(db, "userChat", user.uid, "Contacts", selectedChat, 'messages'), {
       message: messagetosend,
@@ -48,6 +49,18 @@ function Chat() {
         }
       ),
     [db]
+
+    ; (async () => {
+      const docRef = doc(db, 'users', selectedChat);
+      const snapshots = await getDoc(docRef)
+      const username = snapshots.data()?.username
+      setSelectedChatData(username)
+      const photoURL = snapshots.data()?.photoURL
+      setSelectedPhotoURL(photoURL)
+
+
+    })()
+   
   
 
   return (
@@ -56,8 +69,9 @@ function Chat() {
         <div className='flex bg-gray-100 p-2  items-center justify-between'>
           {/* {contactInfo.map(info => {
          return( */}
-          <div className="">
-            <span className=' font-bold '>{selectedChat}</span>
+          <div className="flex items-center space-x-2">
+            <img src={selectedPhotoURL} className="w-8 h-8 rounded-full"/>
+            <span className=' font-bold '>{selectedChatData}</span>
           </div>
           {/* )
        })} */}
@@ -103,10 +117,13 @@ function Chat() {
         <div className="">
           <div className=' mb-6 flex  ml-2 items-end  justify-center '>
             <div className="flex items-center w-full ml-6 mr-6 mb-4">
-              <FaceSmileIcon className='w-6' />
+              <div className="flex space-x-2">
+                <FaceSmileIcon className='w-6' />
+                <PaperClipIcon className="w-6" />
+              </div>
               <input value={message} onChange={e => setMessage(e.target.value)} placeholder='Enter your message here' className='w-full outline-none border bg-gray-200 rounded-lg text-black p-2 ml-2 mr-2 h-10 scrollbar-hide ' />
-              <button onClick={sendMessage} type='submit' className='mr-2 bg-blue-900 text-white font-semibold p-1 rounded-lg'>Send</button>
-              <PaperClipIcon className="w-6" />
+              <PaperAirplaneIcon onClick={sendMessage} type='submit' className='mr-2 h-8 cursor-pointer'/>
+              
             </div>
           </div>
         </div>
@@ -127,9 +144,9 @@ function Chat() {
         <div className='flex bg-white p-2   items-center justify-between'>
           {/* {contactInfo.map(info => {
          return( */}
-          <div className="flex space-x-4 items-center">
-    
-              <span className=' font-bold '>{selectedChat}</span>
+          <div className="flex space-x-2 items-center">
+              <img src={selectedPhotoURL} className="w-8 h-8 rounded-full"/>
+              <span className=' font-bold '>{selectedChatData}</span>
           </div>
           {/* )
        })} */}
