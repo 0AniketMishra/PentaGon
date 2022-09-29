@@ -16,7 +16,7 @@ function chats() {
         <main className='grid grid-cols-1 md:grid-cols-10 lg:grid-cols-9 lg:max-w-7xl mx-auto'>
   
           <section className="lg:col-span-2 md:col-span-10 ">
-            <ChatSidebar children={undefined} />
+            <ChatSidebar/>
           </section>
       
           <section className="lg:col-span-5 md:col-span-10 ">

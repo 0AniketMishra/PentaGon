@@ -6,7 +6,7 @@ import ChatHeader from './ChatHeader'
 import { ChatAtomState } from '../../atoms/ChatAtom';
 import { useRecoilState } from 'recoil';
 
-function ChatSidebar({ children }) {
+function ChatSidebar() {
 
   const [user] = useAuthState(auth);
   const [contacts, setContacts] = useState([])
