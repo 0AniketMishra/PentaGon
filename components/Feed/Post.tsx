@@ -92,7 +92,7 @@ function Post({ id, username, userImg, img, posttext, timestamp, uid }) {
   }
   return (
     <div>
-      <div className="mr-2  ml-2 mt-2 p-2 rounded-2xl items-center bg-white   ">
+      <div className="mr-4  ml-4 mt-2 p-2 rounded-2xl items-center bg-white   ">
         <div className="flex items-center ">
           <div className="flex  items-center ">
             <div>

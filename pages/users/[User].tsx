@@ -11,6 +11,10 @@ import { BellIcon, EllipsisHorizontalCircleIcon, EyeIcon, UserPlusIcon } from '@
 import Moment from 'react-moment';
 import { Tab } from '@headlessui/react';
 import Sidebar from '../../components/Common/Sidebar';
+import { useRecoilState } from 'recoil';
+import { followState } from '../../atoms/followAtom';
+import FollowModal from '../../components/Modal/FollowModal';
+import { pidState } from '../../atoms/pidAtom';
 
 
 const User = (data,  {
@@ -28,6 +32,9 @@ const User = (data,  {
     const [user] = useAuthState(auth);
     const [userPost, setUserPost] = useState([])
 
+    const [followOpen, setFollowOpen] = useRecoilState(followState)
+    const [pidValue, setPidValue] = useRecoilState(pidState)
+
       useEffect(() => {
           ;(async () => {
             const docRef = doc(db, 'users', pid); 
@@ -43,7 +50,7 @@ const User = (data,  {
 
           })()
       }, [])
-
+    setPidValue(pid)
     useEffect(() => {
         ;(async () => {
             const docRef = collection(db, "posts");
@@ -63,18 +70,26 @@ const User = (data,  {
     useEffect(() => {
         setHasFollowed(followers.findIndex(follower => follower.id === user.uid) !== -1)
     }, [followers])
-
-
-
+    useEffect(() => onSnapshot(collection(db, 'users', user.uid, 'following'), (snapshot) =>
+        setFollowing(snapshot.docs)), [db]
+    )
     const followUser = async () => {
       
         if (hasFollowed && pid!=user.uid) {
             await deleteDoc(doc(db, 'users', pid ,  'followers', user.uid));
+            await deleteDoc(doc(db, 'users', user.uid, 'following', pid))
             setHasFollowed(false)
         } else {
 
             await setDoc(doc(db, 'users', pid , 'followers', user.uid), {
                 username: user.displayName,
+                photoURL: photoUrl,
+                uid: uid
+            });
+            await setDoc(doc(db, 'users', user.uid, 'following', pid), {
+                username: username,
+                photoURL: photoUrl,
+                uid: uid
             });
            
         }
@@ -103,6 +118,7 @@ const ContactUser = async () => {
     return( 
       <div className='bg-gray-100'>
             <Header />
+            <FollowModal/>
             <main className='grid grid-cols-1   lg:grid-cols-12 lg:max-w-7xl mx-auto'>
                 <section className='lg:col-span-3 md:col-span-0 hidden lg:inline-flex'>
                     <div className="fixed top-20">
@@ -167,9 +183,9 @@ const ContactUser = async () => {
                                             <h1 className="">  <Moment>{timestamp}</Moment></h1>
                                        </div>
                                        
-                                       <div className="flex  space-x-10 mt-4 mb-4 font-bold"> 
-                                         <h1>21 Following</h1>
+                                       <div onClick={() => setFollowOpen(true)} className="flex  space-x-10 mt-4 mb-4 font-bold cursor-pointer rounded-lg hover:bg-gray-100 w-fit p-2 "> 
                                          <h1>{followers.length} Followers</h1>
+                                            <h1>{following.length} Following</h1>
                                        </div>
                                        
                                     </div>

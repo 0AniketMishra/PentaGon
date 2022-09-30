@@ -1,10 +1,20 @@
 import { SparklesIcon } from "@heroicons/react/24/outline";
+import { collection, onSnapshot } from "firebase/firestore";
+import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../firebase";
+import { auth, db } from "../../firebase";
 
 function Sidebar() {
 
     const [user] = useAuthState(auth);
+    const [followers, setFollowers] = useState([])
+    const [following, setFollowing] = useState([])
+        useEffect(() => onSnapshot(collection(db, 'users', user.uid, 'followers'), (snapshot) =>
+        setFollowers(snapshot.docs)), [db]
+    )
+    useEffect(() => onSnapshot(collection(db, 'users', user.uid, 'following'), (snapshot) =>
+        setFollowing(snapshot.docs)), [db]
+    )
 
     return (
         <div>
@@ -19,12 +29,14 @@ function Sidebar() {
                         <p className="mt-2 font-sans font-light text-black">Hello, I am from another the other side!</p>
                     </div>
                     <div className="flex justify-center pb-3 text-black font-bold text-sm">
-                        <div className="text-center mr-3 border-r pr-3 flex space-x-1 ">
-                            <h2>34</h2>
-                            <span >Followers</span>
-                        </div>
+                     
+                                <div className="text-center mr-3 border-r pr-3 flex space-x-1 ">
+                                    <h2>{followers.length}</h2>
+                                    <span >Followers</span>
+                                </div>
+                            
                         <div className="text-center flex space-x-1">
-                            <h2>42</h2>
+                            <h2>{following.length}</h2>
                             <span>Following</span>
                         </div>
                     </div>
