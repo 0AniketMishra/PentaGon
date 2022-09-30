@@ -64,8 +64,8 @@ function Chat() {
   
 
   return (
-    <div>
-      <div className='  hidden lg:block mt-6 mx-auto rounded-lg border w-[90%] h-[84vh]'>
+    <div className=''>
+      <div className='  hidden lg:block mt-6 mx-auto rounded-lg border w-[90%]  h-full'>
         <div className='flex bg-gray-100 p-2  items-center justify-between'>
           {/* {contactInfo.map(info => {
          return( */}
@@ -82,7 +82,7 @@ function Chat() {
           </div>
         </div>
 
-        <div className="h-[68vh] overflow-y-scroll scrollbar-hide">
+        <div className=" overflow-y-scroll scrollbar-hide h-[68vh]">
 
 
 
@@ -116,7 +116,7 @@ function Chat() {
         </div>
         <div className="">
           <div className=' mb-6 flex  ml-2 items-end  justify-center '>
-            <div className="flex items-center w-full ml-6 mr-6 mb-4">
+            <div className="flex items-center w-full ml-6 mr-6 ">
               <div className="flex space-x-2">
                 <FaceSmileIcon className='w-6' />
                 <PaperClipIcon className="w-6" />
@@ -190,7 +190,7 @@ function Chat() {
         </div>
         <div className="">
           <div className=' mb-6 flex  ml-2 items-end  justify-center '>
-              <div className="flex items-center w-full ml-6 mr-6 mb-4">
+              <div className="flex items-center w-full ml-2 mr-2 mb-4">
                 <div className="flex space-x-2">
                   <FaceSmileIcon className='w-6' />
                   <PaperClipIcon className="w-6" />

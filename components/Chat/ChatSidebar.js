@@ -32,38 +32,42 @@ function ChatSidebar() {
 
 
  <div>
-      <div className=' hidden lg:block mt-6 mb-8 ml-4 border rounded-lg  overflow-y-scroll scrollbar-hide bg-gray-100  h-[84vh]'>
+      <div className=' hidden lg:block mt-6 mb-8 ml-4 border rounded-lg  overflow-y-scroll scrollbar-hide bg-gray-100  h-full'>
         <ChatHeader />
-        {contacts.map(contact => {
-          return (
-            <div key={contact.id} onClick={() => setSelctedChat(contact.data().uid)} className='flex cursor-pointer rounded-lg mb-4 ml-2 mr-2 p-2  hover:bg-gray-200 items-center'>
-              <div>
-                <img src={contact.data().photoURL} alt="" className=' border p-[1px] mt-2  bg-white w-12 h-12 rounded-full ' />
+        <div className='h-[72vh]'>
+          {contacts.map(contact => {
+            return (
+              <div key={contact.id} onClick={() => setSelctedChat(contact.data().uid)} className='flex cursor-pointer rounded-lg mb-4 ml-2 mr-2 p-2  hover:bg-gray-200 items-center'>
+                <div>
+                  <img src={contact.data().photoURL} alt="" className=' border p-[1px] mt-2  bg-white w-12 h-12 rounded-full ' />
+                </div>
+                <div className=''>
+                  <h1 className='ml-1 font-bold text-black '>{contact.data().username}</h1>
+                  <h1 className='ml-1 text-black text-sm truncate w-40 '>This is a sample of a latest message </h1>
+                </div>
               </div>
-              <div className=''>
-                <h1 className='ml-1 font-bold text-black '>{contact.data().username}</h1>
-                <h1 className='ml-1 text-black text-sm truncate w-40 '>This is a sample of a latest message </h1>
-              </div>
-            </div>
-          )
-        })}
+            )
+          })}
+        </div>
       </div>
       {selectedChat == "Undefined" && (
       <div className='lg:hidden mt-6 mb-8 ml-4 mr-4 border rounded-lg  overflow-y-scroll scrollbar-hide bg-gray-100  h-[82vh]'>
-        <ChatHeader />
-        {contacts.map(contact => {
-          return (
-            <div key={contact.id} onClick={() => setSelctedChat(contact.data().uid)} className='flex cursor-pointer rounded-lg mb-4 ml-2 mr-2 p-2  hover:bg-gray-200 items-center'>
-              <div>
-                <img src={contact.data().photoURL} alt="" className=' border p-[1px] mt-2  bg-white w-12 h-12 rounded-full ' />
-              </div>
-              <div className=''>
-                <h1 className='ml-1 font-bold text-black '>{contact.data().username}</h1>
-                <h1 className='ml-1 text-black text-sm truncate w-40 '>This is a sample of a latest message </h1>
-              </div>
-            </div>
-          )
-        })}
+          <ChatHeader />
+          <div className='h-[72vh]'>
+            {contacts.map(contact => {
+              return (
+                <div key={contact.id} onClick={() => setSelctedChat(contact.data().uid)} className='flex cursor-pointer rounded-lg mb-4 ml-2 mr-2 p-2  hover:bg-gray-200 items-center'>
+                  <div>
+                    <img src={contact.data().photoURL} alt="" className=' border p-[1px] mt-2  bg-white w-12 h-12 rounded-full ' />
+                  </div>
+                  <div className=''>
+                    <h1 className='ml-1 font-bold text-black '>{contact.data().username}</h1>
+                    <h1 className='ml-1 text-black text-sm truncate w-40 '>This is a sample of a latest message </h1>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
       </div>
       )}
  </div>
