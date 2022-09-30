@@ -1,15 +1,20 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { ArrowPathIcon, ArrowPathRoundedSquareIcon, Bars4Icon, BellIcon, HomeIcon, MagnifyingGlassIcon, PlusIcon, UserGroupIcon,} from '@heroicons/react/24/outline'
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase';
 import { modalState } from '../../atoms/modalAtom';
 import { useRecoilState } from 'recoil';
 import Link from 'next/link'
+import { Menu, Transition } from '@headlessui/react';
+import { StoryModalState } from '../../atoms/StoryAtom';
 
 function Header() {
-
+    function classNames(...classes) {
+        return classes.filter(Boolean).join(' ')
+    }
     const [user] = useAuthState(auth);
     const [Open, setOpen] = useRecoilState(modalState)
+    const [StoryOpen, setStoryOpen] = useRecoilState(StoryModalState)
 
     return (
     <div className=" sticky top-0 bg-white z-40">
@@ -30,7 +35,73 @@ function Header() {
                     </div>
                 </div>
                 <div className="flex  items-center space-x-2 lg:mr-6"> 
-                    <PlusIcon onClick={() => setOpen(true)} className='  w-6 h-6 hover:scale-125 transition-all duration-150 ease-out' />
+                    <Menu as="div" className="relative inline-block text-left">
+                        <div>
+                            <Menu.Button className="inline-flex  outline-none  px-4 py-2 text-sm font-medium   ">
+                                {/* Options
+                // <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" /> */}
+                                <PlusIcon  className='  w-6 h-6 hover:scale-125 transition-all duration-150 ease-out' />
+                            </Menu.Button>
+                        </div>
+                        <Transition as={Fragment} enter="transition ease-out duration-100" enterFrom="transform opacity-0 scale-95" enterTo="transform opacity-100 scale-100" leave="transition ease-in duration-75" leaveFrom="transform opacity-100 scale-100" leaveTo="transform opacity-0 scale-95">
+                            <Menu.Items className="absolute right-0 z-10 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                <div className="py-1">
+                                    <Menu.Item>
+                                        {({ active }) => (
+                                            <a
+                                                href="#"
+                                                className={classNames(
+                                                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm'
+                                                )}>
+
+                                                <div>
+                                                    <p onClick={() => setOpen(true)}>Upload Post</p>
+                                                </div>
+                                            </a>
+                                        )}
+                                    </Menu.Item>
+                                    {/* <Menu.Item>
+                                        {({ active }) => (
+                                            <a
+                                                href="#"
+                                                className={classNames(
+                                                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm'
+                                                )}>
+                                                Support
+                                            </a>
+                                        )}
+                                    </Menu.Item> */}
+                                    {/* <Menu.Item>
+                                        {({ active }) => (
+                                            <a
+                                                href="#"
+                                                className={classNames(
+                                                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm'
+                                                )}>
+                                                License
+                                            </a>
+                                        )}
+                                    </Menu.Item> */}
+                                    
+                                
+                                            <Menu.Item>
+                                                {({ active }) => (
+                                                    <button
+                                                    onClick={() => setStoryOpen(true)}
+                                                        type="submit"
+                                                        className={classNames(
+                                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block w-full px-4 py-2 text-left text-sm'
+                                                        )}>
+                                                     Upload Story
+                                                    </button>
+                                                )}
+                                            </Menu.Item>
+                                        
+                                    
+                                </div>
+                            </Menu.Items>
+                        </Transition>
+                    </Menu>
                     <Link href="/" >
                         <a className="flex items-center">
                             <HomeIcon className='  w-6 h-6 hover:scale-125 transition-all duration-150 ease-out' />

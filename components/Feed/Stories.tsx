@@ -8,7 +8,7 @@ const [users, setUsers] = useState([])
 
   useEffect(
     () =>
-      onSnapshot(query(collection(db, 'users')),
+      onSnapshot(query(collection(db, 'stories')),
         snapshot => {
           setUsers(snapshot.docs)
         }
@@ -17,13 +17,15 @@ const [users, setUsers] = useState([])
   );
 
   return (
-    <div >
-      <div className="flex ml-4 mr-4  p-2 rounded-lg  overflow-x-scroll border    border-gray-200  ">
+    <div className='mr-2 ml-2  p-2 rounded-2xl  mb-6 scrollbar-hide overflow-x-scroll  bg-white' >
+      <h1 className='font-bold text-lg mb-4'># Stories</h1>
+      <div className="flex   ">
+       
            <div className='flex space-x-6 '>
                   {users.map(user => {
                     return(
-                      <div key={user.id} className="items-center">
-                        <img src={user.data().photoURL} alt="" className="h-14 w-14 rounded-full p-[1.5px] border-red-500 border-2" />
+                      <div key={user.id} className="items-center cursor-pointer hover:scale-110 transition-all duration-150 ease-out">
+                        <img src={user.data().profileImg} alt="" className="h-14 w-14 rounded-full p-[1.5px] border-gray-400 border-2" />
                         <p className="text- w-16 truncate text-center">{user.data().username}</p>
                       </div>
                     )

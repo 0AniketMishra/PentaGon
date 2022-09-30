@@ -7,9 +7,10 @@ import MiniProfile from '../../components/Common/MiniProfile';
 import Suggestions from '../../components/Common/Suggestions';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase';
-import { BellIcon, EllipsisHorizontalCircleIcon, EyeIcon } from '@heroicons/react/24/outline';
+import { BellIcon, EllipsisHorizontalCircleIcon, EyeIcon, UserPlusIcon } from '@heroicons/react/24/outline';
 import Moment from 'react-moment';
 import { Tab } from '@headlessui/react';
+import Sidebar from '../../components/Common/Sidebar';
 
 
 const User = (data,  {
@@ -34,6 +35,7 @@ const User = (data,  {
             const username = snapshots.data().username
             const photoURL = snapshots.data().photoURL
             const uid = snapshots.data().uid
+              const timestamp = snapshots.data().timestamp
             setUid(uid)
             setUsername(username)
             setPhotoUrl(photoURL)
@@ -99,18 +101,22 @@ const ContactUser = async () => {
 
   
     return( 
-      <div>
+      <div className='bg-gray-100'>
             <Header />
-            <main className='grid grid-cols-1   lg:grid-cols-9 lg:max-w-7xl mx-auto'>
-               
-                <section className="lg:col-span-6 md:col-span-6 ">
-                    <div className='rounded-lg'>
-                        <div className=" bg-gray-200  mt-6   flex   justify-center  ">
-                            <div className=" w-full   bg-white  shadow-lg  ">
+            <main className='grid grid-cols-1   lg:grid-cols-12 lg:max-w-7xl mx-auto'>
+                <section className='lg:col-span-3 md:col-span-0 hidden lg:inline-flex'>
+                    <div className="fixed top-20">
+                        <Sidebar />
+                    </div>
+                </section>
+                <section className="lg:col-span-6 md:col-span-6 w-[90%] mx-auto h-screen">
+                    <div className='rounded-xl'>
+                        <div className="   mt-6   flex   justify-center  ">
+                            <div className=" w-full rounded-xl  bg-white ">
                                
                                
                                 <div className=" h-48 overflow-hidden" >
-                                    <img className="w-full " src="https://images.unsplash.com/photo-1605379399642-870262d3d051?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80" alt="" />
+                                    <img className="w-full rounded-xl " src="https://images.unsplash.com/photo-1605379399642-870262d3d051?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80" alt="" />
                                    
                                 </div>
                                
@@ -119,7 +125,7 @@ const ContactUser = async () => {
                                     {pid != user.uid && (
                                         <div className='flex space-x-4 '>
                                             {/* <EllipsisHorizontalCircleIcon className="w-8  mt-8 h-8 bg-white rounded-full"/> */}
-                                            <button onClick={ContactUser} className='hover:bg-white border-blue-500 border bg-blue-500 text-white w-24 h-10  mt-7 hover:text-green-500  rounded-full p-1 hover:border-green-500 font-bold '>Message</button>
+                                            <UserPlusIcon onClick={ContactUser} className=' border-blue-500 border bg-blue-500 text-white w-10 h-10  mt-7 cursor-pointer  rounded-full p-1  '/>
                                       
                                                 <div className='flex' >
                                                 {hasFollowed ? (
@@ -141,6 +147,7 @@ const ContactUser = async () => {
                                 
                                 <div className="">
                                     {/* If you want the text to be centered then add text-center in the div below */}
+                                    
                                     <div className=" px-14">
                                        <div>
                                          <div className='flex items-center'>
@@ -149,18 +156,22 @@ const ContactUser = async () => {
                                                     <img src="https://th.bing.com/th/id/R.9c88df48e24182943ba4945b92aa3704?rik=ng8QDZfIeaOAvg&riu=http%3a%2f%2fclipart-library.com%2fimages%2fgTeEegLRc.png&ehk=rFKFF6hVaGBnpA8yieOD6YZvrGTf6%2fiafNKrPlbD7a8%3d&risl=&pid=ImgRaw&r=0" alt="" className='w-5 h-5 mt-1 ml-1' />
                                                 )}
                                                     </div>
-                                            <a className="text-gray-400 mt-2 hover:text-blue-500" target="BLANK()">@{username.replace(/\s+/g, " ").toLowerCase()}</a>
+                                            <a className="text-gray-400  hover:text-blue-500" target="BLANK()">@{username.replace(/\s+/g, " ").toLowerCase()}</a>
                                        </div>
-                                       <div className="flex mt-2 items-center">
-                                        <EyeIcon className="w-6 h-6 mr-1 "/>
-                                        <h1>Last Seen : </h1>
-                                        <h1> Dummy date</h1>
+                                       <div className="flex items-center space-x-2 mt-4">
+                                           <h1 className='font-bold'>About: </h1>
+                                           <p>Hey There! I am using PentaGon</p>
                                        </div>
+                                       <div className="flex mt-2 items-center space-x-2">
+                                        <h1 className='font-bold'>Last Seen: </h1>
+                                            <h1 className="">  <Moment>{timestamp}</Moment></h1>
+                                       </div>
+                                       
                                        <div className="flex  space-x-10 mt-4 mb-4 font-bold"> 
                                          <h1>21 Following</h1>
                                          <h1>{followers.length} Followers</h1>
                                        </div>
-                                        <p className="mt-2 text-gray-500 text-sm">Hey There! I am on PentaGon</p>
+                                       
                                     </div>
 
                                     

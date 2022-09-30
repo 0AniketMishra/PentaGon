@@ -7,8 +7,8 @@ function MiniProfile() {
 
   const [user] = useAuthState(auth);
   return (
-    <div className=" ">
-      <div className="flex  bg-gray-100 p-2 rounded-lg items-center justify-between  mr-4">
+  
+      <div className="flex w-60 bg-white p-2 rounded-xl items-center justify-between  mr-4 ">
         <img src={user.photoURL} alt="" className="w-12 h-12 rounded-full border p-[2px]" />
         <div className="flex-1 ml-2">
           <h2 className="font-bold text-xs ">{user.displayName}</h2>
@@ -16,8 +16,9 @@ function MiniProfile() {
           <button className="text-blue-400  font-semibold text-xs" onClick={() => auth.signOut()}>Sign Out</button>
         </div>
       </div>
-    </div>
 
+   
+    
   )
 }
 

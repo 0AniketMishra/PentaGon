@@ -139,30 +139,30 @@ function Chat() {
 
 
       {selectedChat != "Undefined" && (
-      <div className='lg:hidden  mt-6 mr-4 rounded-lg border ml-4 h-[82vh]'>
-        <div className='flex bg-white p-2   items-center justify-between'>
+      <div className='lg:hidden  mt-6 mr-4 rounded-lg border ml-4 h-full'>
+           <div className='flex bg-gray-100 p-2  items-center justify-between'>
           {/* {contactInfo.map(info => {
          return( */}
-          <div className="flex space-x-2 items-center">
-              <img src={selectedPhotoURL} className="w-8 h-8 rounded-full"/>
-              <span className=' font-bold '>{selectedChatData}</span>
+          <div className="flex items-center space-x-2">
+            <img src={selectedPhotoURL} className="w-8 h-8 rounded-full"/>
+            <span className=' font-bold '>{selectedChatData}</span>
           </div>
           {/* )
        })} */}
-          <div className='flex space-x-4'>
-            <VideoCameraIcon onClick={fetch} className='w-6 h-6  hover:bg-gray-500 rounded-full p-1' />
-            <PhoneIcon className='w-6 h-6  hover:bg-gray-500 rounded-full p-1' />
-            <EllipsisVerticalIcon className='w-6 h-6  ml-4 hover:bg-gray-500 rounded-full p-1' />
+          <div className='flex space-x-4 items-center'>
+            <VideoCameraIcon onClick={fetch} className='w-4 h-4 ' />
+            <PhoneIcon className='w-4 h-4' />
+            <EllipsisVerticalIcon className='w-5 h-5  ml-4' />
           </div>
         </div>
 
-        <div className="h-[68vh] overflow-y-scroll scrollbar-hide">
+        <div className=" overflow-y-scroll scrollbar-hide h-[68vh]">
 
 
 
           {sentMessages.map(message => {
             return (
-              <div key={message.id}>
+              <div key={message.id} className="">
                 {user.uid === message.data().uid ? (
                   <div key={message.id}>
                     <div className=" flex justify-end ">
@@ -190,14 +190,14 @@ function Chat() {
         </div>
         <div className="">
           <div className=' mb-6 flex  ml-2 items-end  justify-center '>
-              <div className="flex items-center w-full ml-2 mr-2 mb-4">
-                <div className="flex space-x-2">
-                  <FaceSmileIcon className='w-6' />
-                  <PaperClipIcon className="w-6" />
-                </div>
-                <input value={message} onChange={e => setMessage(e.target.value)} placeholder='Enter your message here' className='w-full outline-none border bg-gray-200 rounded-lg text-black p-2 ml-2 mr-2 h-10 scrollbar-hide ' />
-                <PaperAirplaneIcon onClick={sendMessage} type='submit' className='mr-2 h-8 cursor-pointer' />
+            <div className="flex items-center w-full ml-6 mr-6 ">
+              <div className="flex space-x-2">
+                <FaceSmileIcon className='w-6' />
+                <PaperClipIcon className="w-6" />
               </div>
+              <input value={message} onChange={e => setMessage(e.target.value)} placeholder='Enter your message here' className='w-full outline-none border bg-gray-200 rounded-lg text-black p-2 ml-2 mr-2 h-10 scrollbar-hide ' />
+              <PaperAirplaneIcon onClick={sendMessage} type='submit' className='mr-2 h-8 cursor-pointer' />
+            </div>
           </div>
         </div>
       </div>

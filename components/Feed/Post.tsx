@@ -92,7 +92,7 @@ function Post({ id, username, userImg, img, posttext, timestamp, uid }) {
   }
   return (
     <div>
-      <div className="ml-4 mr-4 mt-8 p-2 rounded-lg items-center  border border-gray-200   ">
+      <div className="mr-2  ml-2 mt-2 p-2 rounded-2xl items-center bg-white   ">
         <div className="flex items-center ">
           <div className="flex  items-center ">
             <div>
@@ -183,7 +183,7 @@ function Post({ id, username, userImg, img, posttext, timestamp, uid }) {
         </div>
 
         <div className="ml-4  mt-2 md:mr-4 ">
-          <h1 className="lg:w-[90%] mb-4 mt-4 ml-4 text-lg">{posttext}</h1>
+          <h1 className="lg:w-[90%] mb-4 mt-4 ml-4 text-lg ">{posttext}</h1>
           <div className="flex items-center space-x-4 p-2 " >
             <img src={img} alt="" className='w-96 rounded-lg ' />
           </div>

@@ -116,6 +116,11 @@ function Modal() {
                                     className='h-28 rounded-lg outline-none focus:ring-0 w-full p-2'
                                     placeholder="Say Something..."/>
                                     </div>
+                                    {/* <div className="mt-2">
+                                        <textarea ref={captionRef}
+                                            className='h-28 rounded-lg outline-none focus:ring-0 w-full p-2'
+                                            placeholder="Say Something..." />
+                                    </div> */}
 
                                     <div className="mt-4">
                                         <button
