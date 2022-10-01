@@ -70,7 +70,7 @@ const User = (data,  {
     useEffect(() => {
         setHasFollowed(followers.findIndex(follower => follower.id === user.uid) !== -1)
     }, [followers])
-    useEffect(() => onSnapshot(collection(db, 'users', user.uid, 'following'), (snapshot) =>
+    useEffect(() => onSnapshot(collection(db, 'users', pid, 'following'), (snapshot) =>
         setFollowing(snapshot.docs)), [db]
     )
     const followUser = async () => {
@@ -176,7 +176,7 @@ const ContactUser = async () => {
                                        </div>
                                        <div className="flex items-center space-x-2 mt-4">
                                            <h1 className='font-bold'>About: </h1>
-                                           <p>Hey There! I am using PentaGon</p>
+                                           <p>Hey There! I am using HexaGon</p>
                                        </div>
                                        <div className="flex mt-2 items-center space-x-2">
                                         <h1 className='font-bold'>Last Seen: </h1>

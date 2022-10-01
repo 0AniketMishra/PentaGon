@@ -21,8 +21,8 @@ function Header() {
         <div className="flex justify-between max-w-7xl  mx-5 lg:mx-auto ">
             <div className='relative h-12 w-24 cursor-pointer'>
                 <div className="flex items-center lg:ml-6">
-                    <img onClick={() => auth.signOut()} src={user.photoURL} alt="" className=" ml-2 w-10 h-10 mt-2 rounded-full " />
-                        <h1 className="text-xs text-center font-bold ml-2 hidden lg:inline-grid  mt-2">{user.displayName}</h1>
+                        <img onClick={() => auth.signOut()} src="https://actufinance.fr/wp-content/uploads/2021/02/Paymium-logo-300x300.jpg" alt="" className=" ml-2 w-14 h-14 rounded-full " />
+                         <h1 className='font-bold text-md'>HexaGon</h1>
                     </div>
                 </div>
 
@@ -30,14 +30,14 @@ function Header() {
                     <div className=" p-3 rounded-md flex h-14 items-center">
                         <div className=' hidden lg:inline-flex space-x-2 bg-gray-100 p-2 rounded-full px-2  justify-center '>
                             <MagnifyingGlassIcon className="h-6 w-6 text-gray-500" />
-                            <input type="text" placeholder='Search-PenaGon' className='bg-transparent lg:w-80  w-36 outline-none  ' />
+                            <input type="text" placeholder='Search-HexaGon' className='bg-transparent lg:w-80  w-36 outline-none  ' />
                         </div>
                     </div>
                 </div>
                 <div className="flex  items-center space-x-2 lg:mr-6"> 
                     <Menu as="div" className="relative inline-block text-left">
                         <div>
-                            <Menu.Button className="inline-flex  outline-none  px-4 py-2 text-sm font-medium   ">
+                            <Menu.Button className="inline-flex  mt-1 mr-1    ">
                                 {/* Options
                 // <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" /> */}
                                 <PlusIcon  className='  w-6 h-6 hover:scale-125 transition-all duration-150 ease-out' />
