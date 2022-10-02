@@ -133,7 +133,7 @@ function Modal() {
                                               
                                             </div>
                                         ) : (
-                                            <div onClick={() => vidPickerRef.current.click()} className="mt-4 flex items-center justify-center h-10 w-10 rouned-full bg-blue-100 rounded-full cursor-pointer">
+                                            <div onClick={() => filePickerRef.current.click()} className="mt-4 flex items-center justify-center h-10 w-10 rouned-full bg-blue-100 rounded-full cursor-pointer">
                                                 <VideoCameraIcon
                                                     className="h-6 w-6  rounded-full"
                                                     aria-hidden="true"
