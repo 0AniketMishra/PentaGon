@@ -13,7 +13,7 @@ function Home() {
   return (
     <div className="h-screen overflow-y-scroll scrollbar-hide bg-gray-100">
       <Head>
-        <title>Home | PentaGon</title>
+        <title>Home | HexaGon</title>
       </Head>
         <Header />
       <StoryModal />

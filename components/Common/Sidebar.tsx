@@ -17,8 +17,8 @@ function Sidebar() {
     )
 
     return (
-        <div>
-            <div className=" ml-6 xl:ml-16 w-60">
+        <div className="overflow-y-scroll h-[85vh] scrollbar-hide">
+            <div className=" ml-6 xl:ml-16 w-60 ">
                 <div className=" rounded-2xl overflow-hidden bg-white ">
                     <img src="https://i.imgur.com/dYcYQ7E.png" className="" />
                     <div className="flex ml-4 -mt-8">
@@ -45,7 +45,7 @@ function Sidebar() {
 
             </div>
 
-            <div className="xl:ml-16 bg-white mt-8 ml-6 w-60 rounded-xl p-2  ">
+            <div className="xl:ml-16 bg-white mt-8 ml-6 w-60 rounded-xl p-2 mb-4 ">
                 <div className="flex">
                     <h1 className="font-bold text-lg ml-2">Explore</h1>
                     <h1 className="flex-1"></h1>

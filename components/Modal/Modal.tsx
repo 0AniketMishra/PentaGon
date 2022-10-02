@@ -2,7 +2,7 @@ import React, { Fragment, useRef, useState } from 'react'
 import { modalState } from '../../atoms/modalAtom'
 import { useRecoilState } from "recoil"
 import { Dialog, Transition } from '@headlessui/react'
-import { CameraIcon, CubeTransparentIcon, PlusIcon } from '@heroicons/react/24/outline'
+import { CameraIcon, CubeTransparentIcon, PhotoIcon, PlusIcon, VideoCameraIcon } from '@heroicons/react/24/outline'
 import {db, storage} from '../../firebase'
 import {addDoc, collection, doc, updateDoc} from "@firebase/firestore"
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -16,10 +16,14 @@ function Modal() {
 
     const [Open, setOpen] = useRecoilState(modalState)
     const filePickerRef = useRef(null);
+    const vidPickerRef = useRef(null);
     const [selectedFile, setSelectedFile] = useState(null);
+    const [selectedVideo, setSelectedVideo] = useState(null);
     const captionRef = useRef(null)
     const [loading, setLoading] = useState(false); 
     const [user] = useAuthState(auth);
+
+
     const uploadPost = async () => {
        
       if(loading) return;
@@ -39,6 +43,7 @@ function Modal() {
        
       console.log("New doc added wth ID", docRef.id); 
       const imageRef = ref(storage, `posts/${docRef.id}/image`)
+        const videoRef = ref(storage, `posts/${docRef.id}/video`)
       if(selectedFile){
           await uploadString(imageRef, selectedFile, "data_url").then(async snapshot => {
               const downloadURL = await getDownloadURL(imageRef)
@@ -47,6 +52,14 @@ function Modal() {
               })
           }); 
       }
+        if (selectedVideo) {
+            await uploadString(videoRef, selectedVideo, "data_url").then(async snapshot => {
+                const downloadURL = await getDownloadURL(videoRef)
+                await updateDoc(doc(db, 'posts', docRef.id), {
+                    video: downloadURL
+                })
+            });
+        }
         
       setOpen(false)
       setLoading(false)
@@ -60,6 +73,15 @@ function Modal() {
         }
         reader.onload = (readerEvent) => {
             setSelectedFile(readerEvent.target.result)
+        }
+    }
+    const addVideoToPost = (e) => {
+        const reader = new FileReader();
+        if (e.target.files[0]) {
+            reader.readAsDataURL(e.target.files[0])
+        }
+        reader.onload = (readerEvent) => {
+            setSelectedVideo(readerEvent.target.result)
         }
     }
     
@@ -87,27 +109,51 @@ function Modal() {
                                     <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
                                         Upload a Post..
                                     </Dialog.Title>
-                                    {selectedFile ? (
-                                        <div className='flex space-x-4 items-center'>
-                                            <img src={selectedFile} onClick={() => setSelectedFile(null)}
-                                                className="w-32 object-contain cursor-pointer rounded-lg mt-2"
-                                                alt="" />
-                                                <PlusIcon className="w-6 h-6"/>
-                                        </div>
-                                    ) : (
-                                        <div onClick={() => filePickerRef.current.click()} className="mt-4 flex items-center justify-center h-10 w-10 rouned-full bg-blue-100 rounded-full cursor-pointer">
-                                            <CameraIcon
-                                                className="h-6 w-6  rounded-full"
-                                                aria-hidden="true"
-                                            />
-                                        </div>
-                                    )}
+                                    <div className='flex space-x-4'>
+                                        {selectedFile ? (
+                                            <div className='flex space-x-4 items-center'>
+                                                <img src={selectedFile} onClick={() => setSelectedFile(null)}
+                                                    className="w-32 object-contain cursor-pointer rounded-lg mt-2"
+                                                    alt="" />
+                                             
+                                            </div>
+                                        ) : (
+                                            <div onClick={() => filePickerRef.current.click()} className="mt-4 flex items-center justify-center h-10 w-10 rouned-full bg-blue-100 rounded-full cursor-pointer">
+                                                <PhotoIcon
+                                                    className="h-6 w-6  rounded-full"
+                                                    aria-hidden="true"
+                                                />
+                                            </div>
+                                        )}
+                                        {selectedVideo ? (
+                                            <div className='flex space-x-4 items-center' onClick={() => setSelectedFile(null)}>
+                                                <video src={selectedVideo} controls autoPlay muted
+                                                    className="w-64 object-contain cursor-pointer rounded-lg mt-2"
+                                                />
+                                              
+                                            </div>
+                                        ) : (
+                                            <div onClick={() => vidPickerRef.current.click()} className="mt-4 flex items-center justify-center h-10 w-10 rouned-full bg-blue-100 rounded-full cursor-pointer">
+                                                <VideoCameraIcon
+                                                    className="h-6 w-6  rounded-full"
+                                                    aria-hidden="true"
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
 
                                     <div>
-                                        <input type="file"
+                                        <input type="photo"
                                             ref={filePickerRef}
                                             hidden
                                             onChange={addImageToPost}
+                                        />
+                                    </div>
+                                    <div>
+                                        <input type="file"
+                                            ref={vidPickerRef}
+                                            hidden
+                                            onChange={addVideoToPost}
                                         />
                                     </div>
 

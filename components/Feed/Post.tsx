@@ -11,7 +11,7 @@ import { Menu, Transition } from '@headlessui/react'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
 
-function Post({ id, username, userImg, img, posttext, timestamp, uid }) {
+function Post({ id, username, userImg, img,vid, posttext, timestamp, uid }) {
 
   const [commentBoxVisible, setCommentBoxVisible] = useState<boolean>(false)
   const [user] = useAuthState(auth);
@@ -92,7 +92,7 @@ function Post({ id, username, userImg, img, posttext, timestamp, uid }) {
   }
   return (
     <div>
-      <div className="mr-4  ml-4 mt-2 p-2 rounded-2xl items-center bg-white   ">
+      <div className="mr-4  ml-4 mt-4 p-2 rounded-2xl  items-center bg-white   ">
         <div className="flex items-center ">
           <div className="flex  items-center ">
             <div>
@@ -184,8 +184,12 @@ function Post({ id, username, userImg, img, posttext, timestamp, uid }) {
 
         <div className="ml-4  mt-2 md:mr-4 ">
           <h1 className="lg:w-[90%] mb-4 mt-4 ml-4 text-lg ">{posttext}</h1>
-          <div className="flex items-center space-x-4 p-2 " >
+          <div className="flex items-center space-x-4 p-2 justify-left" >
             <img src={img} alt="" className='w-96 rounded-lg ' />
+            {vid && (
+              <video src={vid} controls autoPlay muted loop className="rounded-lg " />
+            )}
+
           </div>
         </div>
         <div >

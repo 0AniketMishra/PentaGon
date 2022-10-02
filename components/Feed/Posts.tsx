@@ -30,6 +30,7 @@ function Posts() {
           username={post.data().username}
           userImg={post.data().profileImg}
           img={post.data().image}
+          vid={post.data().video}
           posttext={post.data().posttext}
           timestamp={post.data().timestamp}
           uid={post.data().uid}
