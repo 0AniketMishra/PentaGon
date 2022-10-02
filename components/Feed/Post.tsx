@@ -92,7 +92,7 @@ function Post({ id, username, userImg, img,vid, posttext, timestamp, uid }) {
   }
   return (
     <div>
-      <div className="mr-4  ml-4 mt-4 p-2 rounded-2xl  items-center bg-white   ">
+      <div className="mr-4  ml-4 lg:mr-2 lg:ml-2 mt-4 p-2 rounded-2xl  items-center bg-white   ">
         <div className="flex items-center ">
           <div className="flex  items-center ">
             <div>
@@ -102,7 +102,7 @@ function Post({ id, username, userImg, img,vid, posttext, timestamp, uid }) {
               <div className="flex items-center">
                 <Link href={'/users/' + uid}>
                   <a>
-                    <h1 className="text-sm font-bold ml-2 hover:border-b cursor-pointer " >{username}</h1>
+                    <h1 className="text-sm font-bold ml-2 hover:text-blue-500 cursor-pointer " >{username}</h1>
                   </a>
                 </Link>
                 {followers.length > 10 && (

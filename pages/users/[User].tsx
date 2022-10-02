@@ -7,7 +7,7 @@ import MiniProfile from '../../components/Common/MiniProfile';
 import Suggestions from '../../components/Common/Suggestions';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase';
-import { BellIcon, EllipsisHorizontalCircleIcon, EyeIcon, UserPlusIcon } from '@heroicons/react/24/outline';
+import { BellIcon, EllipsisHorizontalCircleIcon, EyeIcon, PencilIcon, PencilSquareIcon, UserPlusIcon } from '@heroicons/react/24/outline';
 import Moment from 'react-moment';
 import { Tab } from '@headlessui/react';
 import Sidebar from '../../components/Common/Sidebar';
@@ -17,14 +17,14 @@ import FollowModal from '../../components/Modal/FollowModal';
 import { pidState } from '../../atoms/pidAtom';
 
 
-const User = (data,  {
+const User = ({
     id,
 }) => {
     const router = useRouter()
     const pid  = router.query.User as string
     const [username, setUsername] = useState("")
     const [uid, setUid] = useState("")
-    const [photoUrl, setPhotoUrl] = useState("")
+    const [photoURL, setPhotoURL] = useState("")
     const [timestamp, setTimestamp] = useState("")
     const [followers, setFollowers] = useState([])
     const [hasFollowed, setHasFollowed] = useState(false)
@@ -45,7 +45,7 @@ const User = (data,  {
               const timestamp = snapshots.data().timestamp
             setUid(uid)
             setUsername(username)
-            setPhotoUrl(photoURL)
+            setPhotoURL(photoURL)
             setTimestamp(timestamp)
 
           })()
@@ -83,12 +83,12 @@ const User = (data,  {
 
             await setDoc(doc(db, 'users', pid , 'followers', user.uid), {
                 username: user.displayName,
-                photoURL: photoUrl,
-                uid: uid
+                photoURL: user.photoURL,
+                uid: user.uid
             });
             await setDoc(doc(db, 'users', user.uid, 'following', pid), {
                 username: username,
-                photoURL: photoUrl,
+                photoURL: photoURL,
                 uid: uid
             });
            
@@ -110,7 +110,7 @@ const ContactUser = async () => {
     await setDoc(doc(db, 'userChat', user.uid,"Contacts", uid ), {
         username: username,
         uid: uid, 
-        photoURL: photoUrl,
+        photoURL: photoURL,
     }, {merge: true});
 }
 
@@ -137,11 +137,11 @@ const ContactUser = async () => {
                                 </div>
                                
                                 <div className="flex justify-between px-5  -mt-12">
-                                    <img className="h-28 w-28 bg-white p-1 rounded-full  ml-4 " src={photoUrl} alt="" />
+                                    <img className="h-28 w-28 bg-white p-1 rounded-full  ml-4 " src={photoURL} alt="" />
                                     {pid != user.uid && (
                                         <div className='flex space-x-4 '>
                                             {/* <EllipsisHorizontalCircleIcon className="w-8  mt-8 h-8 bg-white rounded-full"/> */}
-                                            <UserPlusIcon onClick={ContactUser} className=' border-blue-500 border bg-blue-500 text-white w-10 h-10  mt-7 cursor-pointer  rounded-full p-1  '/>
+                                            <UserPlusIcon onClick={ContactUser} className=' border-blue-500 border bg-blue-500 text-white w-10 h-10  mt-7 cursor-pointer  rounded-full p-2  '/>
                                       
                                                 <div className='flex' >
                                                 {hasFollowed ? (
@@ -168,8 +168,12 @@ const ContactUser = async () => {
                                        <div>
                                          <div className='flex items-center'>
                                                 <h2 className="text-gray-800 text-xl font-bold">{username}</h2>
+                                              
                                                 {followers.length > 10 && (
                                                     <img src="https://th.bing.com/th/id/R.9c88df48e24182943ba4945b92aa3704?rik=ng8QDZfIeaOAvg&riu=http%3a%2f%2fclipart-library.com%2fimages%2fgTeEegLRc.png&ehk=rFKFF6hVaGBnpA8yieOD6YZvrGTf6%2fiafNKrPlbD7a8%3d&risl=&pid=ImgRaw&r=0" alt="" className='w-5 h-5 mt-1 ml-1' />
+                                                )}
+                                                {username === user.displayName && (
+                                                    <PencilSquareIcon className="w-4 ml-1 cursor-pointer " />
                                                 )}
                                                     </div>
                                             <a className="text-gray-400  hover:text-blue-500" target="BLANK()">@{username.replace(/\s+/g, " ").toLowerCase()}</a>
